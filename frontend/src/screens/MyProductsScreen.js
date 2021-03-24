@@ -4,20 +4,28 @@ import Product from '../components/Product.js'
 import Message from '../components/Message.js'
 import Loader from '../components/Loader.js'
 import { Row, Col } from 'react-bootstrap'
-import { listProducts } from '../actions/productActions'
+import { userlistProducts } from '../actions/userActions'
 
-const HomeScreen = () => {
+const MyProductsScreen = ({ history }) => {
   const dispatch = useDispatch()
-  const productList = useSelector((state) => state.productList)
-  const { loading, error, products } = productList
+  const userProductList = useSelector((state) => state.userProductList)
+  const { loading, error, products } = userProductList
+  console.log(products)
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
   useEffect(() => {
-    dispatch(listProducts())
-  }, [dispatch])
+    if (userInfo) {
+      dispatch(userlistProducts())
+    } else {
+      history.push('/login')
+    }
+  }, [dispatch, history, userInfo])
 
   return (
     <>
-      <h1>Latest Products</h1>
+      <h1>My Products</h1>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -35,4 +43,4 @@ const HomeScreen = () => {
   )
 }
 
-export default HomeScreen
+export default MyProductsScreen

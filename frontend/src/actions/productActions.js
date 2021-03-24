@@ -1,5 +1,8 @@
 import axios from 'axios'
 import {
+  PRODUCT_DELETE_FAIL,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
   PRODUCT_DETAILS_FAIL,
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
@@ -8,7 +11,7 @@ import {
   PRODUCT_LIST_SUCCESS,
 } from '../constants/productConstants'
 
-export const ListProducts = () => async (dispach) => {
+export const listProducts = () => async (dispach) => {
   try {
     dispach({ type: PRODUCT_LIST_REQUEST })
     const { data } = await axios.get('/api/products')
@@ -38,6 +41,33 @@ export const listProductsDetails = (id) => async (dispach) => {
   } catch (error) {
     dispach({
       type: PRODUCT_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const deleteProduct = (id) => async (dispach, getState) => {
+  try {
+    dispach({ type: PRODUCT_DELETE_REQUEST })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    await axios.delete(`/api/products/${id}`, config)
+    dispach({
+      type: PRODUCT_DELETE_SUCCESS,
+    })
+  } catch (error) {
+    dispach({
+      type: PRODUCT_DELETE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
