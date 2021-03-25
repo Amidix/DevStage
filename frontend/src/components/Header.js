@@ -36,10 +36,11 @@ const Header = () => {
                   <LinkContainer to='/myproducts'>
                     <NavDropdown.Item>My Products</NavDropdown.Item>
                   </LinkContainer>
-
-                  <NavDropdown.Item onClick={logoutHandler}>
-                    Logout
-                  </NavDropdown.Item>
+                  <LinkContainer to='/'>
+                    <NavDropdown.Item onClick={logoutHandler}>
+                      Logout
+                    </NavDropdown.Item>
+                  </LinkContainer>
                 </NavDropdown>
               ) : (
                 <LinkContainer to='/login'>

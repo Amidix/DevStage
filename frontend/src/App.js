@@ -34,12 +34,12 @@ const App = () => {
           <Route path='/register' component={RegisterScreen} />
           <Route path='/profile' component={ProfileScreen} />
           <Route path='/myproducts' component={MyProductsScreen} />
-          <Route path='/product/:id' component={ProductScreen} />
+          <Route path='/product/:id' component={ProductScreen} exact />
           <Route path='/cart/:id?' component={CartScreen} />
           <Route path='/admin/userlist' component={UserListScreen} />
           <Route path='/admin/user/:id/edit' component={UserEditScreen} />
           <Route path='/admin/productlist' component={ProductListScreen} />
-          <Route path='/admin/product/:id/edit' component={ProductEditScreen} />
+          <Route path='/product/:id/edit' component={ProductEditScreen} exact />
           <Route path='/' component={HomeScreen} exact />
         </Container>
       </main>

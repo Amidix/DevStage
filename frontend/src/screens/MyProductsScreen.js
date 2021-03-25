@@ -55,7 +55,7 @@ const MyProductsScreen = ({ history }) => {
           {products.map((product) => (
             <Col key={product._id} sm={12} md={6} lg={4}>
               <Product product={product} />
-              <LinkContainer to={`/admin/product/${product._id}/edit`}>
+              <LinkContainer to={`/product/${product._id}/edit`}>
                 <Button variant='light' className='btn-sm'>
                   <i className='fas fa-edit'></i>
                 </Button>

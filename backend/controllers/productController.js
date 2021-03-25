@@ -62,7 +62,12 @@ const createProduct = asyncHandler(async (req, res) => {
     description,
   })
   const createdProduct = await product.save()
-  res.status(201).json(createdProduct)
+  if (createdProduct) {
+    res.status(201).json(createdProduct)
+  } else {
+    res.status(404)
+    throw new Error('Product not Created')
+  }
 })
 
 // @desc Update a product
