@@ -243,10 +243,19 @@ export const updateUser = (user) => async (dispach, getState) => {
   }
 }
 
-export const userlistProducts = () => async (dispach) => {
+export const userlistProducts = () => async (dispach, getState) => {
   try {
     dispach({ type: USER_PRODUCTS_REQUEST })
-    const { data } = await axios.get('/api/users/myproducts')
+    const {
+      userLogin: { userInfo },
+    } = getState()
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const { data } = await axios.get('/api/users/myproducts', config)
     dispach({
       type: USER_PRODUCTS_SUCCESS,
       payload: data,
