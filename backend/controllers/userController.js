@@ -15,6 +15,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      isVerified: user.isVerified,
       token: generateToken(user._id),
     })
   } else {
@@ -43,6 +44,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      isVerified: user.isVerified,
       token: generateToken(user._id),
     })
   } else {
@@ -62,6 +64,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      isVerified: user.isVerified,
     })
   } else {
     res.status(404)
@@ -86,6 +89,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
+      isVerified: updatedUser.isVerified,
       token: generateToken(updatedUser._id),
     })
   } else {
@@ -141,6 +145,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.name = req.body.name || user.name
     user.email = req.body.email || user.email
     user.isAdmin = req.body.isAdmin
+    user.isVerified = req.body.isVerified
 
     const updatedUser = await user.save()
     res.json({
@@ -148,6 +153,7 @@ const updateUser = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
+      isVerified: updatedUser.isVerified,
     })
   } else {
     res.status(404)

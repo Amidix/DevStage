@@ -14,6 +14,7 @@ const UserEditScreen = ({ match, history }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isAdmin, setIsAdmin] = useState(false)
+  const [isVerified, setIsVerified] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -38,13 +39,14 @@ const UserEditScreen = ({ match, history }) => {
         setName(user.name)
         setEmail(user.email)
         setIsAdmin(user.isAdmin)
+        setIsVerified(user.isVerified)
       }
     }
   }, [dispatch, history, userId, user, successUpdate])
 
   const submitHandler = (e) => {
     e.preventDefault()
-    dispatch(updateUser({ _id: userId, name, email, isAdmin }))
+    dispatch(updateUser({ _id: userId, name, email, isAdmin, isVerified }))
   }
 
   return (
@@ -86,6 +88,14 @@ const UserEditScreen = ({ match, history }) => {
                 label='Is Admin'
                 checked={isAdmin}
                 onChange={(e) => setIsAdmin(e.target.checked)}
+              ></Form.Check>
+            </Form.Group>
+            <Form.Group controlId='isverified'>
+              <Form.Check
+                type='checkbox'
+                label='Is Verified'
+                checked={isVerified}
+                onChange={(e) => setIsVerified(e.target.checked)}
               ></Form.Check>
             </Form.Group>
 

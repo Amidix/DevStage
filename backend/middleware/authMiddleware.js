@@ -34,4 +34,13 @@ const admin = (req, res, next) => {
   }
 }
 
-export { protect, admin }
+const verified = (req, res, next) => {
+  if (req.user && req.user.isVerified) {
+    next()
+  } else {
+    res.status(401)
+    throw new Error('Not authorized, you must be verified')
+  }
+}
+
+export { protect, admin, verified }
