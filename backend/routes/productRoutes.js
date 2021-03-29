@@ -6,11 +6,11 @@ import {
   updateProduct,
   createProduct,
 } from '../controllers/productController.js'
-import { protect, admin } from '../middleware/authMiddleware.js'
+import { protect, admin, verified } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.route('/').get(getProducts).post(protect, createProduct)
+router.route('/').get(getProducts).post(protect, verified, createProduct)
 router
   .route('/:id')
   .get(getProductById)

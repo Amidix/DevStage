@@ -41,9 +41,7 @@ const MyProductsScreen = ({ history }) => {
   return (
     <>
       <h1>My Products</h1>
-      <Link className='btn btn-light my-3' to='/createproduct'>
-        Create a product :
-      </Link>
+
       {loadingDelete && <Loader />}
       {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
       {loading ? (
@@ -51,25 +49,30 @@ const MyProductsScreen = ({ history }) => {
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Row>
-          {products.map((product) => (
-            <Col key={product._id} sm={12} md={6} lg={4}>
-              <Product product={product} />
-              <LinkContainer to={`/product/${product._id}/edit`}>
-                <Button variant='light' className='btn-sm'>
-                  <i className='fas fa-edit'></i>
+        <div>
+          <Link className='btn btn-light my-3' to='/createproduct'>
+            Create a product :
+          </Link>
+          <Row>
+            {products.map((product) => (
+              <Col key={product._id} sm={12} md={6} lg={4}>
+                <Product product={product} />
+                <LinkContainer to={`/product/${product._id}/edit`}>
+                  <Button variant='light' className='btn-sm'>
+                    <i className='fas fa-edit'></i>
+                  </Button>
+                </LinkContainer>
+                <Button
+                  variant='danger'
+                  className='btn-sm'
+                  onClick={() => deleteHandler(product._id)}
+                >
+                  <i className='fas fa-trash'></i>
                 </Button>
-              </LinkContainer>
-              <Button
-                variant='danger'
-                className='btn-sm'
-                onClick={() => deleteHandler(product._id)}
-              >
-                <i className='fas fa-trash'></i>
-              </Button>
-            </Col>
-          ))}
-        </Row>
+              </Col>
+            ))}
+          </Row>
+        </div>
       )}
     </>
   )

@@ -28,7 +28,6 @@ const ProductScreen = ({ history, match }) => {
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`)
   }
-
   return (
     <>
       <Link className='btn btn-light my-3' to='/'>
@@ -47,6 +46,12 @@ const ProductScreen = ({ history, match }) => {
             <ListGroup variant='flush'>
               <ListGroup.Item>
                 <h3>{product.name}</h3>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                Chef :
+                <Link to={`/user/${product.user._id}`}>
+                  {product.user.name}
+                </Link>{' '}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Rating

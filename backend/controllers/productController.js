@@ -13,7 +13,10 @@ const getProducts = asyncHandler(async (req, res) => {
 // @route GET /api/products/:id
 // @access Public
 const getProductById = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id)
+  const product = await Product.findById(req.params.id).populate(
+    'user',
+    'name email'
+  )
   if (product) {
     res.json(product)
   } else {
@@ -47,7 +50,6 @@ const createProduct = asyncHandler(async (req, res) => {
     brand,
     category,
     countInStock,
-    numReviews,
     description,
   } = req.body
   const product = new Product({
@@ -58,7 +60,6 @@ const createProduct = asyncHandler(async (req, res) => {
     brand,
     category,
     countInStock,
-    numReviews,
     description,
   })
   const createdProduct = await product.save()
