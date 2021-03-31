@@ -37,7 +37,7 @@ const ProductCreateScreen = ({ history }) => {
       dispatch({ type: PRODUCT_CREATE_RESET })
       history.push('/myproducts')
     }
-  }, [dispatch, history, successCreate, errorCreate])
+  }, [dispatch, history, successCreate, errorCreate, userInfo])
 
   const submitHandler = (e) => {
     e.preventDefault()

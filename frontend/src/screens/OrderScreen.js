@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { Link } from 'react-router-dom'
-import { getOrderDetails } from '../actions/orderActions'
+import { getOrderDetails /*payOrder*/ } from '../actions/orderActions'
 
 const OrderScreen = ({ match }) => {
   const orderId = match.params.id
@@ -12,14 +12,20 @@ const OrderScreen = ({ match }) => {
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
 
+  /*const orderPay = useSelector((state) => state.orderPay)
+  const { loading: loadingpayment, success, error: errorpayment } = orderPay*/
+
   useEffect(() => {
     dispatch(getOrderDetails(orderId))
-  }, [])
+  }, [dispatch, orderId])
   if (!loading) {
     order.itemsPrice = order.orderItems.reduce(
       (acc, item) => acc + item.price * item.qty,
       0
     )
+  }
+  const paymentHandler = () => {
+    console.log('payed')
   }
   return loading ? (
     <Loader />
@@ -123,6 +129,16 @@ const OrderScreen = ({ match }) => {
                   <Col>Total</Col>
                   <Col>${order.totalPrice}</Col>
                 </Row>
+              </ListGroup.Item>
+
+              <ListGroup.Item>
+                <Button
+                  type='button'
+                  className='btn-block'
+                  onClick={paymentHandler}
+                >
+                  Pay
+                </Button>
               </ListGroup.Item>
             </ListGroup>
           </Card>

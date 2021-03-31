@@ -35,9 +35,6 @@ const ProductListScreen = ({ history, match }) => {
       dispatch(deleteProduct(id))
     }
   }
-  const createProductHandler = (product) => {
-    // CREATE PRODUCT
-  }
 
   return (
     <>

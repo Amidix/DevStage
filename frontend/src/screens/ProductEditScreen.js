@@ -7,7 +7,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { listProductsDetails, updateProduct } from '../actions/productActions'
-import { USER_UPDATE_RESET } from '../constants/userConstants'
+//import { USER_UPDATE_RESET } from '../constants/userConstants'
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants'
 
 const ProductEditScreen = ({ match, history }) => {
@@ -58,7 +58,7 @@ const ProductEditScreen = ({ match, history }) => {
         setDescription(product.description)
       }
     }
-  }, [dispatch, history, productId, product, successUpdate])
+  }, [dispatch, history, productId, product, successUpdate, userInfo.isAdmin])
 
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0]
