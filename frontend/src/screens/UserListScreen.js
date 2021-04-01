@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Button, Table } from 'react-bootstrap'
+import { Button, Table, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -46,6 +46,9 @@ const UserListScreen = ({ history }) => {
               <th>ID</th>
               <th>NAME</th>
               <th>EMAIL</th>
+              <th>PHOTO</th>
+              <th>CIN RECTO</th>
+              <th>CIN VERSO</th>
               <th>ADMIN</th>
               <th>VERIFIED</th>
               <th></th>
@@ -56,8 +59,18 @@ const UserListScreen = ({ history }) => {
               <tr key={user.id}>
                 <td>{user._id}</td>
                 <td>{user.name}</td>
+
                 <td>
                   <a href={`mailto:${user.email}`}>{user.email}</a>
+                </td>
+                <td>
+                  <Image src={user.image} fluid></Image>
+                </td>
+                <td>
+                  <Image src={user.cinRecto} fluid></Image>
+                </td>
+                <td>
+                  <Image src={user.cinVerso} fluid></Image>
                 </td>
                 <td>
                   {user.isAdmin ? (

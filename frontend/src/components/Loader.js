@@ -13,7 +13,7 @@ const Loader = () => {
         display: 'block',
       }}
     >
-      <soan className='sr-only'>Loading...</soan>
+      <span className='sr-only'>Loading...</span>
     </Spinner>
   )
 }

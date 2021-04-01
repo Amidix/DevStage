@@ -15,6 +15,18 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    image: {
+      type: String,
+      required: false,
+    },
+    cinRecto: {
+      type: String,
+      required: false,
+    },
+    cinVerso: {
+      type: String,
+      required: false,
+    },
     isAdmin: {
       type: Boolean,
       required: true,

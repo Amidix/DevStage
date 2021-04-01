@@ -16,6 +16,9 @@ const authUser = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       isVerified: user.isVerified,
+      cinRecto: user.cinRecto,
+      cinVerso: user.cinVerso,
+      image: user.image,
       token: generateToken(user._id),
     })
   } else {
@@ -65,6 +68,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
       email: user.email,
       isAdmin: user.isAdmin,
       isVerified: user.isVerified,
+      cinRecto: user.cinRecto,
+      cinVerso: user.cinVerso,
+      image: user.image,
     })
   } else {
     res.status(404)
@@ -80,6 +86,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name
     user.email = req.body.email || user.email
+    user.image = req.body.image || user.image
+    user.cinRecto = req.body.cinRecto || user.cinRecto
+    user.cinVerso = req.body.cinVerso || user.cinVerso
     if (req.body.password) {
       user.password = req.body.password
     }
@@ -90,6 +99,9 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
       isVerified: updatedUser.isVerified,
+      cinRecto: updatedUser.cinRecto,
+      cinVerso: updatedUser.cinVerso,
+      image: updatedUser.image,
       token: generateToken(updatedUser._id),
     })
   } else {
@@ -144,6 +156,9 @@ const updateUser = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name
     user.email = req.body.email || user.email
+    user.cinRecto = req.body.cinRecto || user.cinRecto
+    user.cinVerso = req.body.cinVerso || user.cinVerso
+    user.image = req.body.image || user.image
     user.isAdmin = req.body.isAdmin
     user.isVerified = req.body.isVerified
 
@@ -154,6 +169,9 @@ const updateUser = asyncHandler(async (req, res) => {
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
       isVerified: updatedUser.isVerified,
+      cinRecto: updatedUser.cinRecto,
+      cinVerso: updatedUser.cinVerso,
+      image: updatedUser.image,
     })
   } else {
     res.status(404)

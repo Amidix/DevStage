@@ -1,5 +1,6 @@
+import axios from 'axios'
 import React, { useState, useEffect } from 'react'
-import { Table, Form, Button, Row, Col } from 'react-bootstrap'
+import { Table, Form, Button, Row, Col, Image } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -10,9 +11,13 @@ import { listMyOrders } from '../actions/orderActions'
 const ProfileScreen = ({ location, history }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [cinRecto, setCinRecto] = useState('')
+  const [cinVerso, setCinVerso] = useState('')
+  const [image, setImage] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [message, setMessage] = useState(null)
+  const [uploading, setUploading] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -28,6 +33,83 @@ const ProfileScreen = ({ location, history }) => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { success } = userUpdateProfile
 
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', file)
+    setUploading(true)
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+      const { data } = await axios.post('/api/upload', formData, config)
+      setImage(data)
+      setUploading(false)
+    } catch (error) {
+      console.error(error)
+      setUploading(false)
+    }
+  }
+  const uploadFileCinRectoHandler = async (e) => {
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', file)
+    setUploading(true)
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+      const { data } = await axios.post('/api/upload', formData, config)
+      setCinRecto(data)
+      setUploading(false)
+    } catch (error) {
+      console.error(error)
+      setUploading(false)
+    }
+  }
+  const uploadFileCinVersoHandler = async (e) => {
+    const file = e.target.files[0]
+    const formData = new FormData()
+    formData.append('image', file)
+    setUploading(true)
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+      const { data } = await axios.post('/api/upload', formData, config)
+      setCinVerso(data)
+      setUploading(false)
+    } catch (error) {
+      console.error(error)
+      setUploading(false)
+    }
+  }
+
+  const submitHandler = (e) => {
+    e.preventDefault()
+    if (password !== confirmPassword) {
+      setMessage('Passwords do not match')
+    } else {
+      dispatch(
+        updateUserProfile({
+          id: user._id,
+          name,
+          email,
+          password,
+          cinRecto,
+          cinVerso,
+          image,
+        })
+      )
+    }
+  }
+
   useEffect(() => {
     if (!userInfo) {
       history.push('/login')
@@ -38,18 +120,12 @@ const ProfileScreen = ({ location, history }) => {
       } else {
         setName(user.name)
         setEmail(user.email)
+        setCinRecto(user.cinRecto)
+        setCinVerso(user.cinVerso)
+        setImage(user.image)
       }
     }
-  }, [dispatch, history, userInfo, user])
-
-  const submitHandler = (e) => {
-    e.preventDefault()
-    if (password !== confirmPassword) {
-      setMessage('Passwords do not match')
-    } else {
-      dispatch(updateUserProfile({ id: user._id, name, email, password }))
-    }
-  }
+  }, [dispatch, history, userInfo, user, success])
 
   return (
     <Row>
@@ -77,6 +153,43 @@ const ProfileScreen = ({ location, history }) => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             ></Form.Control>
+          </Form.Group>
+          <Form.Group controlId='image'>
+            <Form.Label>Image</Form.Label>
+            <br></br>
+            <Image src={user.image} fluid></Image>
+            <Form.File
+              id='image-file'
+              label='Choose File'
+              custom
+              encType='multipart/form-data'
+              onChange={uploadFileHandler}
+            ></Form.File>
+          </Form.Group>
+          <Form.Group controlId='cinRecto'>
+            <Form.Label>CIN Recto</Form.Label>
+            <br></br>
+            <Image src={user.cinRecto} fluid></Image>
+            <Form.File
+              id='Image-file'
+              label='Choose File'
+              custom
+              encType='multipart/form-data'
+              onChange={uploadFileCinRectoHandler}
+            ></Form.File>
+          </Form.Group>
+          <Form.Group controlId='cinVerso'>
+            <Form.Label>CIN Verso</Form.Label>
+            <br></br>
+            <Image src={user.cinVerso} fluid></Image>
+            <Form.File
+              id='Image-file'
+              label='Choose File'
+              custom
+              encType='multipart/form-data'
+              onChange={uploadFileCinVersoHandler}
+            ></Form.File>
+            {uploading && <Loader />}
           </Form.Group>
           <Form.Group controlId='password'>
             <Form.Label>Password</Form.Label>
