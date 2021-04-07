@@ -26,6 +26,9 @@ import {
   USER_PRODUCTS_SUCCESS,
   USER_PRODUCTS_FAIL,
   USER_PRODUCTS_REQUEST,
+  USER_PRODUCTS_AND_INFO_REQUEST,
+  USER_PRODUCTS_AND_INFO_SUCCESS,
+  USER_PRODUCTS_AND_INFO_FAIL,
 } from '../constants/userConstants'
 import axios from 'axios'
 
@@ -263,6 +266,31 @@ export const userlistProducts = () => async (dispach, getState) => {
   } catch (error) {
     dispach({
       type: USER_PRODUCTS_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const userProductsAndInfo = (id) => async (dispach) => {
+  try {
+    dispach({ type: USER_PRODUCTS_AND_INFO_REQUEST })
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    const { data } = await axios.get(`/api/users/profile/${id}`, config)
+    dispach({
+      type: USER_PRODUCTS_AND_INFO_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispach({
+      type: USER_PRODUCTS_AND_INFO_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

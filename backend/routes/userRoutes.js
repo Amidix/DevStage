@@ -9,6 +9,7 @@ import {
   getUserById,
   updateUser,
   getUserProducts,
+  getUserProductsAndInfo,
 } from '../controllers/userController.js'
 import { protect, admin, verified } from '../middleware/authMiddleware.js'
 const router = express.Router()
@@ -20,7 +21,7 @@ router
   .route('/profile')
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile)
-
+router.route('/profile/:id').get(getUserProductsAndInfo)
 router
   .route('/:id')
   .delete(protect, admin, deleteUser)

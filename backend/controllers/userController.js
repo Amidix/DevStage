@@ -193,6 +193,22 @@ const getUserProducts = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc Auth user products
+// @route GET /api/users/products
+// @access Private
+const getUserProductsAndInfo = asyncHandler(async (req, res) => {
+  const myproducts = await Product.find({
+    user: { _id: req.params.id },
+  }).populate('user', '_id name email image isVerified')
+  //const user = await User.findById(req.user._id)
+  if (myproducts) {
+    res.json(myproducts)
+  } else {
+    res.status(404)
+    throw new Error('No Products Found')
+  }
+})
+
 export {
   authUser,
   getUserProfile,
@@ -203,4 +219,5 @@ export {
   getUserById,
   updateUser,
   getUserProducts,
+  getUserProductsAndInfo,
 }

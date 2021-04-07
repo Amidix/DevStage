@@ -27,6 +27,9 @@ import {
   USER_PRODUCTS_SUCCESS,
   USER_PRODUCTS_FAIL,
   USER_PRODUCTS_REQUEST,
+  USER_PRODUCTS_AND_INFO_REQUEST,
+  USER_PRODUCTS_AND_INFO_SUCCESS,
+  USER_PRODUCTS_AND_INFO_FAIL,
 } from '../constants/userConstants'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -137,6 +140,22 @@ export const userProductsListReducer = (state = { products: [] }, action) => {
     case USER_PRODUCTS_SUCCESS:
       return { loading: false, products: action.payload }
     case USER_PRODUCTS_FAIL:
+      return { loading: false, error: action.payload }
+    default:
+      return state
+  }
+}
+
+export const userProductsAndInfoReducer = (
+  state = { products: [] },
+  action
+) => {
+  switch (action.type) {
+    case USER_PRODUCTS_AND_INFO_REQUEST:
+      return { loading: true, products: [] }
+    case USER_PRODUCTS_AND_INFO_SUCCESS:
+      return { loading: false, products: action.payload }
+    case USER_PRODUCTS_AND_INFO_FAIL:
       return { loading: false, error: action.payload }
     default:
       return state

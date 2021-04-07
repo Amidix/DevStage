@@ -81,7 +81,7 @@ const ProductScreen = ({ history, match }) => {
                 src={product.image}
                 alt={product.name}
                 fluid
-                style={{ height: 400 }}
+                style={{ height: 400, width: 400 }}
               ></Image>
             </Col>
             <Col md={3}>
@@ -92,7 +92,7 @@ const ProductScreen = ({ history, match }) => {
 
                 <ListGroup.Item>
                   Chef :{' '}
-                  <Link to={`/${product.user && product.user._id}`}>
+                  <Link to={`/profile/${product.user && product.user._id}`}>
                     {product.user && product.user.name}
                   </Link>
                 </ListGroup.Item>
