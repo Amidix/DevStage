@@ -13,7 +13,7 @@ import PaymentScreen from './screens/PaymentScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import OrderScreen from './screens/OrderScreen'
 
-import './bootstrap.min.css'
+
 import LoginScreen from './screens/LoginScreen'
 import UserListScreen from './screens/UserListScreen'
 import UserEditScreen from './screens/UserEditScreen'
@@ -50,6 +50,7 @@ const App = () => {
       </main>
       <Footer />
     </Router>
+    
   )
 }
 

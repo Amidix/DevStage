@@ -35,11 +35,19 @@ const Header = () => {
                   <i className='fas fa-shopping-cart'></i> Cart
                 </Nav.Link>
               </LinkContainer>
-              {userInfo ? (
-                <NavDropdown title={userInfo.name} id='username'>
-                  <LinkContainer to='/profile'>
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
+              <LinkContainer to='/'>
+                <Nav.Link>
+                   Products
+                </Nav.Link>
+              </LinkContainer>
+              <LinkContainer to='/profile'>
+                    <Nav.Link>Profile</Nav.Link>
                   </LinkContainer>
+               
+              
+              {userInfo ? (
+                <NavDropdown title='vendor' id='username'>
+              
                   <LinkContainer to='/myproducts'>
                     <NavDropdown.Item>My Products</NavDropdown.Item>
                   </LinkContainer>
@@ -68,7 +76,7 @@ const Header = () => {
                     <NavDropdown.Item>Orders</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
-              )}
+              )}   
             </Nav>
           </Navbar.Collapse>
         </Container>
