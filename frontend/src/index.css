@@ -21,4 +21,16 @@ header {
 .col-md-4 {
   margin-bottom: 30px;
 }
+.custom-btn {
+  background-color: blueviolet !important;
+  border: #fff !important;
+}
 
+.shipping{
+  margin-left: 50px;
+  background-color: blueviolet;
+}
+
+.order-sum{
+  margin-right: 50px;
+}

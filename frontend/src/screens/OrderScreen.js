@@ -33,11 +33,12 @@ const OrderScreen = ({ match }) => {
     <Message variant='danger'>{error}</Message>
   ) : (
     <>
+     
       <h1>Order {order._id}</h1>
-      <Row>
+      <Row style={{ backgroudColor: 'red'}}>
         <Col md={8}>
           <ListGroup variant='flush'>
-            <ListGroup.Item>
+            <ListGroup.Item className='shipping'>
               <h2>Shipping</h2>
               <p>
                 <strong>Name : </strong>
@@ -61,7 +62,7 @@ const OrderScreen = ({ match }) => {
                 <Message variant='danger'>Not Delivered</Message>
               )}
             </ListGroup.Item>
-            <ListGroup.Item>
+            <ListGroup.Item className='shipping'>
               <h2>Payment Method</h2>
               <p>
                 <strong>Methode: </strong>
@@ -73,7 +74,7 @@ const OrderScreen = ({ match }) => {
                 <Message variant='danger'>Not Paid</Message>
               )}
             </ListGroup.Item>
-            <ListGroup.Item>
+            <ListGroup.Item className='shipping'>
               <h2>Order Items</h2>
               {order.orderItems.length === 0 ? (
                 <Message>Order is empty</Message>
@@ -108,7 +109,7 @@ const OrderScreen = ({ match }) => {
         </Col>
         <Col md={4}>
           <Card>
-            <ListGroup variant='flush'>
+            <ListGroup variant='flush' className='order-sum'>
               <ListGroup.Item>
                 <h2>Order Summary</h2>
               </ListGroup.Item>
@@ -134,7 +135,7 @@ const OrderScreen = ({ match }) => {
               <ListGroup.Item>
                 <Button
                   type='button'
-                  className='btn-block'
+                  className='custom-btn'
                   onClick={paymentHandler}
                 >
                   Pay
