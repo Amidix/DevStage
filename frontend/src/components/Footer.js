@@ -1,14 +1,54 @@
 import React from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col,Jumbotron } from 'react-bootstrap'
 
 const Footer = () => {
     return (
-        <footer>
+        <footer >
+             <Jumbotron className='text-left text-light bg-dark mb-0 mt-5 font-footer p-4'>
             <Container>
                 <Row>
-                    <Col className='text-center py-3'>Copyright &copy; Proshop </Col>
+                    <Col xs={7} sm={8} className='border-right'>
+                        <p className='text-uppercase'>LOCATIONS</p>
+                        <Row className='text-capitalize'>
+                            <Col lg={3}>
+                                <p>Brooklyn
+                                    376 Fake Street
+                                    Brooklyn, NY — 11231
+                                    (718) 555-1234
+                                </p>
+                            </Col>
+                            <Col lg={3}>
+                                <p>Queens
+                                    47-33 Fake Street
+                                    Long Island City, NY — 11101
+                                    (347) 555-1234</p>
+                            </Col>
+                            <Col lg={3}>
+                                <p>Food Truck
+                                    25 Fake Street
+                                    New York, NY — 10003
+                                    (917) 555-1234</p>
+                            </Col>
+                        </Row>
+
+                    </Col>
+                    <Col>
+                        <Col>
+                            <p className='text-uppercase'>Hours</p>
+                            <p>Monday — Thursday
+                                <p>8am — 11pm </p>
+                            </p>
+
+                            <p>
+                                Friday — Sunday
+                                <p>11am — 11pm</p>
+                            </p>
+                        </Col>
+                    </Col>
                 </Row>
             </Container>
+
+        </Jumbotron>
         </footer>
     )
 }

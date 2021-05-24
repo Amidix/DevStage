@@ -35,6 +35,7 @@ const RegisterScreen = ({ location, history }) => {
 
   return (
     <FormContainer>
+      <br></br>
       <h1>Sign up</h1>
       {message && <Message variant='danger'>{message}</Message>}
       {error && <Message variant='danger'>{error}</Message>}
@@ -77,7 +78,7 @@ const RegisterScreen = ({ location, history }) => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Button type='submit' variant='primary'>
+        <Button block variant="warning" type='submit' >
           Register
         </Button>
       </Form>

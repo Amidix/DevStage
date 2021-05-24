@@ -15,6 +15,7 @@
   "author": "BOUSSLAMA",
   "license": "ISC",
   "dependencies": {
+    "@artsy/fresnel": "^1.5.0",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
@@ -30,14 +31,19 @@
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.2.0",
+    "react-parallax": "^3.3.0",
     "react-redux": "^7.2.3",
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.2.0",
     "react-script": "^2.0.5",
     "react-scripts": "^4.0.3",
+    "react-scrollbar": "^0.5.6",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.3",
     "web-vitals": "^1.1.1"
   },
   "devDependencies": {

@@ -4,8 +4,10 @@ import Product from '../components/Product.js'
 import Message from '../components/Message.js'
 import Loader from '../components/Loader.js'
 import { Link } from 'react-router-dom'
-import { Row, Col, Button } from 'react-bootstrap'
+import { Row, Col, Button, Container } from 'react-bootstrap'
 import { userProductsAndInfo } from '../actions/userActions'
+import CustomParallax from '../components/CustomParallax'
+import home_top from "../assets/home_top.jpg";
 
 const UserProductsAndInfoScreen = ({ history, match }) => {
   const userId = match.params.id
@@ -29,34 +31,39 @@ const UserProductsAndInfoScreen = ({ history, match }) => {
     dispatch(userProductsAndInfo(userId))
   }, [dispatch, history, userInfo, successDelete])
 
-  const produc = products[0]
+  const produc = loading? null: products[0]
 
   return (
     <>
+     <React.Fragment >
+            <CustomParallax title='My products' img={home_top} height={200}/>
+     </React.Fragment>
       <div>
-        <div className='clearfix' style={{ marginLeft: -280, marginTop: -45 }}>
-          <div className='row'>
-            <div className='card'>
-              <div className='card-body'>
-                <div className='avatar'>
+        <div   >
+          <div className='row' style={{alignItems:'center',justifyContent:'center',borderRadius:150}}>
+            <div >
+              <div  style={{flexDirection:'row'}}>
+                <div  >
                   <img
                     src={produc && produc.user.image}
                     className='card-img-top'
+                    style={{alignItems:'center',justifyContent:'center',borderRadius:150,height:160,width:160,marginBottom:18 }}
                     alt=''
                   />
                 </div>
+                <div  style={{marginLeft:200,marginTop:-150,marginBottom:50}}  >
                 <h5 className='card-title'>{produc && produc.user.name}</h5>
-                <p className='card-text'>
+                <p className='card-text' >
                   {produc && produc.user.email}
                   <br />
-                  <td>
+                  <td >
                     {produc && produc.user.isVerified ? (
-                      <i className='fas fa-check' style={{ color: 'green' }}>
+                      <i className='fas fa-check' style={{ color: 'green',marginTop:30 }}>
                         {' '}
                         Verified
                       </i>
                     ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}>
+                      <i className='fas fa-times' style={{ color: 'red',marginTop:30 }}>
                         {' '}
                         Not Verified
                       </i>
@@ -64,12 +71,14 @@ const UserProductsAndInfoScreen = ({ history, match }) => {
                   </td>
                 </p>
               </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div style={{ marginTop: -280, marginRight: -300 }}>
-          <h2>My Products</h2>
+        <Container>
+       
+          
 
           {loadingDelete && <Loader />}
           {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
@@ -79,7 +88,7 @@ const UserProductsAndInfoScreen = ({ history, match }) => {
             <Message variant='danger'>{error}</Message>
           ) : (
             <div>
-              <Row>
+              <Row style={{marginLeft:30}}>
                 {products.map((product) => (
                   <Col key={product._id} sm={12} md={6} lg={4}>
                     <Product product={product} />
@@ -88,7 +97,7 @@ const UserProductsAndInfoScreen = ({ history, match }) => {
               </Row>
             </div>
           )}
-        </div>
+        </Container>
       </div>
     </>
   )

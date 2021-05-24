@@ -1,4 +1,81 @@
-import React, { useEffect } from 'react'
+import React from 'react';
+import CustomParallax from "../components/CustomParallax";
+import home_top from "../assets/home_top.jpg";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
+import Table from "react-bootstrap/Table";
+import CartTableItem from "../components/CartTableItem";
+import Button from "react-bootstrap/Button";
+import {Link} from "react-router-dom";
+import CartTotalsCart from "../components/CartTotalsCart";
+import { useDispatch, useSelector } from 'react-redux'
+
+const CartScreen = () => {
+
+    const cart = useSelector((state) => state.cart)
+    const { cartItems } = cart
+    
+    const cartTableItemRender = (title) => <CartTableItem product={title.product} image={title.image} name={title.name}
+                                                          price={title.price} qty={title.qty} countInStock={title.countInStock}/>;
+
+    const full = <Row>
+        <Col xs={12} lg={8}>
+            <div className='d-flex'>
+                <h4 className='text-uppercase mr-2 my-auto'>My Cart</h4>
+                <p className='my-auto'>({cartItems.reduce((acc, item) => acc + item.qty, 0)} Products)</p>
+            </div>
+            <Table className='mt-3' responsive>
+                <thead>
+                <tr className='text-center'>
+                    <th/>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                {Object.values(cartItems).map(title =>
+                                (title.qty > 0) && cartTableItemRender(title) 
+                            )}
+                </tbody>
+            </Table>
+        </Col>
+
+        <Col className='ml-lg-5 pl-lg-2 mt-4 mt-lg-0' xs={12} lg={3}>
+            <CartTotalsCart disabled={false} buttonText='Checkout' total={cartItems.reduce((acc, item) => acc + item.qty, 0)} totalPrice= {cartItems
+                .reduce((acc, item) => acc + item.qty * item.price, 0)
+                .toFixed(2)}/>
+        </Col>
+    </Row>;
+    const empty = <div className='text-center'>
+        <h2>
+            Your cart is currently empty...
+        </h2>
+        <Link to='/menu'>
+            <Button variant='warning' className='mt-4'>
+                Back to Deliveries
+            </Button>
+        </Link>
+    </div>;
+
+    return (
+        <React.Fragment>
+            <CustomParallax title='Cart' img={home_top} height={300}/>
+            <Container className='my-auto Cart'>
+                {cartItems.reduce((acc, item) => acc + item.qty, 0) > 0 ? (full) : (empty)}
+            </Container>
+        </React.Fragment>
+    );
+}
+
+
+
+export default CartScreen
+
+/*import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -117,4 +194,4 @@ const CartScreen = ({ match, location, history }) => {
   )
 }
 
-export default CartScreen
+export default CartScreen*/

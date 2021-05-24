@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import { Button, Row, Col, ListGroup, Image, Card, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
@@ -14,8 +14,8 @@ const PlaceOrderScreen = ({ history }) => {
   cart.itemsPrice = cart.cartItems.reduce(
     (acc, item) => acc + item.price * item.qty,
     0
-  )
-  cart.shippingPrice = Number(1)
+  ).toFixed(2)
+  cart.shippingPrice = Number(0)
   const orderCreate = useSelector((state) => state.orderCreate)
   const { order, success, error } = orderCreate
   useEffect(() => {
@@ -39,7 +39,7 @@ const PlaceOrderScreen = ({ history }) => {
   }
   cart.totalPrice = Number(cart.itemsPrice) + Number(cart.shippingPrice)
   return (
-    <>
+    <Container>
       <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
@@ -81,7 +81,7 @@ const PlaceOrderScreen = ({ history }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x {item.price} = ${item.qty * item.price}
+                          {item.qty} x {item.price} = {item.qty * item.price} Dh
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -100,19 +100,19 @@ const PlaceOrderScreen = ({ history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${cart.itemsPrice}</Col>
+                  <Col>{cart.itemsPrice} Dh</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>${cart.shippingPrice}</Col>
+                  <Col>{cart.shippingPrice} Dh</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${cart.totalPrice}</Col>
+                  <Col>{cart.totalPrice} Dh</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -132,7 +132,7 @@ const PlaceOrderScreen = ({ history }) => {
           </Card>
         </Col>
       </Row>
-    </>
+    </Container>
   )
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Card, Button, Container } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -32,7 +32,7 @@ const OrderScreen = ({ match }) => {
   ) : error ? (
     <Message variant='danger'>{error}</Message>
   ) : (
-    <>
+    <Container>
      
       <h1>Order {order._id}</h1>
       <Row style={{ backgroudColor: 'red'}}>
@@ -97,7 +97,7 @@ const OrderScreen = ({ match }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x {item.price} = ${item.qty * item.price}
+                          {item.qty} x {item.price} = {item.qty * item.price} Dh
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -116,19 +116,19 @@ const OrderScreen = ({ match }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${order.itemsPrice}</Col>
+                  <Col>{order.itemsPrice} Dh</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>${order.shippingPrice}</Col>
+                  <Col>{order.shippingPrice} Dh</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${order.totalPrice}</Col>
+                  <Col>{order.totalPrice} Dh</Col>
                 </Row>
               </ListGroup.Item>
 
@@ -145,7 +145,7 @@ const OrderScreen = ({ match }) => {
           </Card>
         </Col>
       </Row>
-    </>
+    </Container>
   )
 }
 

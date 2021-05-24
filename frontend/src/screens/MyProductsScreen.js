@@ -5,7 +5,7 @@ import Product from '../components/Product.js'
 import Message from '../components/Message.js'
 import Loader from '../components/Loader.js'
 import { Link } from 'react-router-dom'
-import { Row, Col, Button } from 'react-bootstrap'
+import { Row, Col, Button, Container } from 'react-bootstrap'
 import { userlistProducts } from '../actions/userActions'
 import { deleteProduct } from '../actions/productActions'
 
@@ -39,7 +39,8 @@ const MyProductsScreen = ({ history }) => {
     }
   }
   return (
-    <>
+    <Container>
+      <br></br>
       <h1>My Products</h1>
 
       {loadingDelete && <Loader />}
@@ -74,7 +75,7 @@ const MyProductsScreen = ({ history }) => {
           </Row>
         </div>
       )}
-    </>
+    </Container>
   )
 }
 
