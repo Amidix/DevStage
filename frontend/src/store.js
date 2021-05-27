@@ -64,6 +64,7 @@ const initialState = {
     shippingAddress: shippingAddressFromStorage,
   },
   userLogin: { userInfo: userInfoFromStorage },
+  message: false,
 }
 const middleware = [thunk]
 

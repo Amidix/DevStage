@@ -1,5 +1,13 @@
 import React, { useEffect } from 'react'
-import { Button, Row, Col, ListGroup, Image, Card, Container } from 'react-bootstrap'
+import {
+  Button,
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Card,
+  Container,
+} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
@@ -11,10 +19,9 @@ const PlaceOrderScreen = ({ history }) => {
 
   const dispatch = useDispatch()
   //Calculating prices
-  cart.itemsPrice = cart.cartItems.reduce(
-    (acc, item) => acc + item.price * item.qty,
-    0
-  ).toFixed(2)
+  cart.itemsPrice = cart.cartItems
+    .reduce((acc, item) => acc + item.price * item.qty, 0)
+    .toFixed(2)
   cart.shippingPrice = Number(0)
   const orderCreate = useSelector((state) => state.orderCreate)
   const { order, success, error } = orderCreate

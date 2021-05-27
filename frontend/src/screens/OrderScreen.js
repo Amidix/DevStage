@@ -1,5 +1,13 @@
 import React, { useEffect } from 'react'
-import { Row, Col, ListGroup, Image, Card, Button, Container } from 'react-bootstrap'
+import {
+  Row,
+  Col,
+  ListGroup,
+  Image,
+  Card,
+  Button,
+  Container,
+} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -24,6 +32,7 @@ const OrderScreen = ({ match }) => {
       0
     )
   }
+
   const paymentHandler = () => {
     console.log('payed')
   }
@@ -33,9 +42,8 @@ const OrderScreen = ({ match }) => {
     <Message variant='danger'>{error}</Message>
   ) : (
     <Container>
-     
       <h1>Order {order._id}</h1>
-      <Row style={{ backgroudColor: 'red'}}>
+      <Row style={{ backgroudColor: 'red' }}>
         <Col md={8}>
           <ListGroup variant='flush'>
             <ListGroup.Item className='shipping'>
@@ -68,6 +76,7 @@ const OrderScreen = ({ match }) => {
                 <strong>Methode: </strong>
                 {order.paymentMethod}
               </p>
+
               {order.isPaid ? (
                 <Message variant='success'>Paid on {order.paidAt}</Message>
               ) : (
