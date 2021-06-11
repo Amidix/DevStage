@@ -37,6 +37,13 @@ const userSchema = mongoose.Schema(
       required: true,
       default: false,
     },
+    address: {
+      street: { type: String },
+      building: { type: String },
+      floor: { type: String },
+      city: { type: String },
+      postalCode: { type: Number },
+    },
   },
   {
     timestamps: true, //created at, updated at

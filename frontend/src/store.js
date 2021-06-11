@@ -26,6 +26,9 @@ import {
   orderDetailsReducer,
   orderListMyReducer,
   orderPayReducer,
+  orderDeliverReducer,
+  orderListVendorReducer,
+  orderListReducer,
 } from './reducers/orderReducers'
 const reducer = combineReducers({
   orderDetails: orderDetailsReducer,
@@ -48,6 +51,9 @@ const reducer = combineReducers({
   orderPay: orderPayReducer,
   orderListMy: orderListMyReducer,
   userProductsAndInfo: userProductsAndInfoReducer,
+  orderListVendor: orderListVendorReducer,
+  orderList: orderListReducer,
+  orderDeliver: orderDeliverReducer,
 })
 const cartItemsFromStorage = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems'))

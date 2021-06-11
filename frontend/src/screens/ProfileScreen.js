@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
+import { Container, Input, Label } from 'reactstrap'
 import { Table, Form, Button, Row, Col, Image } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,12 +8,21 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { listMyOrders } from '../actions/orderActions'
+import CustomParallax from '../components/CustomParallax'
+import home_top from '../assets/home_top.jpg'
 
 const ProfileScreen = ({ location, history }) => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [cinRecto, setCinRecto] = useState('')
   const [cinVerso, setCinVerso] = useState('')
+
+  const [street, setStreet] = useState('')
+  const [city, setCity] = useState('')
+  const [postalCode, setPostalCode] = useState(0)
+  const [building, setBuilding] = useState('')
+  const [floor, setFloor] = useState('')
+
   const [image, setImage] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -33,6 +43,7 @@ const ProfileScreen = ({ location, history }) => {
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
   const { success } = userUpdateProfile
 
+  //image
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0]
     const formData = new FormData()
@@ -52,6 +63,7 @@ const ProfileScreen = ({ location, history }) => {
       setUploading(false)
     }
   }
+
   const uploadFileCinRectoHandler = async (e) => {
     const file = e.target.files[0]
     const formData = new FormData()
@@ -105,6 +117,7 @@ const ProfileScreen = ({ location, history }) => {
           cinRecto,
           cinVerso,
           image,
+          address: { building, city, postalCode, floor, street },
         })
       )
     }
@@ -122,151 +135,251 @@ const ProfileScreen = ({ location, history }) => {
         setEmail(user.email)
         setCinRecto(user.cinRecto)
         setCinVerso(user.cinVerso)
+        setCity(user.address.city)
+        setBuilding(user.address.building)
+        setFloor(user.address.floor)
+        setPostalCode(user.address.postalCode)
+        setStreet(user.address.street)
         setImage(user.image)
       }
     }
   }, [dispatch, history, userInfo, user, success])
 
   return (
-    <Row>
-      <Col md={3}>
-        <h2>User Profile</h2>
-        {message && <Message variant='danger'>{message}</Message>}
-        {error && <Message variant='danger'>{error}</Message>}
-        {success && <Message variant='success'>Profile Updated</Message>}
-        {loading && <Loader />}
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId='name'>
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type='name'
-              placeholder='Enter name'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group controlId='email'>
-            <Form.Label>Email Adress</Form.Label>
-            <Form.Control
-              type='email'
-              placeholder='Enter email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group controlId='image'>
-            <Form.Label>Image</Form.Label>
-            <br></br>
-            <Image src={user.image} fluid></Image>
-            <Form.File
-              id='image-file'
-              label='Choose File'
-              custom
-              encType='multipart/form-data'
-              onChange={uploadFileHandler}
-            ></Form.File>
-          </Form.Group>
-          <Form.Group controlId='cinRecto'>
-            <Form.Label>CIN Recto</Form.Label>
-            <br></br>
-            <Image src={user.cinRecto} fluid></Image>
-            <Form.File
-              id='Image-file'
-              label='Choose File'
-              custom
-              encType='multipart/form-data'
-              onChange={uploadFileCinRectoHandler}
-            ></Form.File>
-          </Form.Group>
-          <Form.Group controlId='cinVerso'>
-            <Form.Label>CIN Verso</Form.Label>
-            <br></br>
-            <Image src={user.cinVerso} fluid></Image>
-            <Form.File
-              id='Image-file'
-              label='Choose File'
-              custom
-              encType='multipart/form-data'
-              onChange={uploadFileCinVersoHandler}
-            ></Form.File>
-            {uploading && <Loader />}
-          </Form.Group>
-          <Form.Group controlId='password'>
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type='password'
-              placeholder='Enter password'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+    <>
+      <section className='contact-page register-page'>
+        <CustomParallax title='PROFILE' text='' img={home_top} height='30em' />
+        <Container>
+          <Row>
+            <Col sm='12'>
+              {message && <Message variant='danger'>{message}</Message>}
+              {error && <Message variant='danger'>{error}</Message>}
+              {success && <Message variant='success'>Profile Updated</Message>}
+              {loading && <Loader />}
+              <h3>PERSONAL DETAILS</h3>
+              <br></br>
+              <Form className='theme-form' onSubmit={submitHandler}>
+                <Row>
+                  <Col md='6'>
+                    <Form.Group controlId='name'>
+                      <Form.Label>Name</Form.Label>
+                      <Form.Control
+                        type='name'
+                        placeholder='Enter name'
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
 
-          <Form.Group controlId='confirmPassword'>
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              type='password'
-              placeholder='Confirm password'
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-          <Button type='submit' variant='primary'>
-            Update
-          </Button>
-        </Form>
-      </Col>
-      <Col md={9}>
-        <h2>My Orders</h2>
-        {loadingOrders ? (
-          <Loader />
-        ) : errorOrders ? (
-          <Message variant='danger'>{errorOrders}</Message>
-        ) : (
-          <Table striped bordered hover responsive className='table-sm'>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIVERED</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order) => (
-                <tr key={order._id}>
-                  <td>{order._id}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
-                  <td>{order.totalPrice}</td>
-                  <td>
-                    {order.isPaid ? (
-                      order.paidAt.substring(0, 10)
-                    ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
-                    ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    <LinkContainer to={`/order/${order._id}`}>
-                      <Button className='btn-sm' variant='light'>
-                        Details
-                      </Button>
-                    </LinkContainer>
-                  </td>
+                  <Col md='6'>
+                    <Form.Group controlId='email'>
+                      <Form.Label>Email Address</Form.Label>
+                      <Form.Control
+                        type='email'
+                        placeholder='Enter email'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md='6'>
+                    <Form.Group controlId='password'>
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control
+                        type='password'
+                        placeholder='Enter password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md='6'>
+                    <Form.Group controlId='confirmPassword'>
+                      <Form.Label>Confirm Password</Form.Label>
+                      <Form.Control
+                        type='password'
+                        placeholder='Confirm password'
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <br></br>
+                <h3>VENDOR INFO</h3>
+                <br></br>
+                <Row>
+                  <Col md='12'>
+                    <Form.Group controlId='street'>
+                      <Form.Label>Street</Form.Label>
+                      <Form.Control
+                        type='name'
+                        placeholder='Enter Street'
+                        value={street}
+                        onChange={(e) => setStreet(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md='6'>
+                    <Form.Group controlId='floor'>
+                      <Form.Label>Floor/Door</Form.Label>
+                      <Form.Control
+                        type='name'
+                        placeholder='Enter floor/door'
+                        value={floor}
+                        onChange={(e) => setFloor(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md='6'>
+                    <Form.Group controlId='building'>
+                      <Form.Label>Building</Form.Label>
+                      <Form.Control
+                        type='name'
+                        placeholder='Enter building'
+                        value={building}
+                        onChange={(e) => setBuilding(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md='6'>
+                    <Form.Group controlId='city'>
+                      <Form.Label>city</Form.Label>
+                      <Form.Control
+                        type='name'
+                        placeholder='Enter city'
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md='6'>
+                    <Form.Group controlId='name'>
+                      <Form.Label>Postal Code</Form.Label>
+                      <Form.Control
+                        type='number'
+                        placeholder='Enter Postal Code'
+                        value={postalCode}
+                        onChange={(e) => setPostalCode(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+
+                  <Col md='4'>
+                    <Form.Group controlId='image'>
+                      <Form.Label>Image</Form.Label>
+                      <Form.File
+                        id='image-file'
+                        label={image ? image : 'Choose File'}
+                        custom
+                        encType='multipart/form-data'
+                        onChange={uploadFileHandler}
+                      ></Form.File>
+                    </Form.Group>
+                  </Col>
+                  <Col md='4'>
+                    <Form.Group controlId='cinRecto'>
+                      <Form.Label>CIN Recto</Form.Label>
+                      <Form.File
+                        id='Image-file'
+                        label={cinRecto ? cinRecto : 'Choose File'}
+                        custom
+                        encType='multipart/form-data'
+                        onChange={uploadFileCinRectoHandler}
+                      ></Form.File>
+                    </Form.Group>
+                  </Col>
+                  <Col md='4'>
+                    <Form.Group controlId='cinVerso'>
+                      <Form.Label>CIN Verso</Form.Label>
+                      <Form.File
+                        id='Image-file'
+                        label={cinVerso ? cinVerso : 'Choose File'}
+                        custom
+                        encType='multipart/form-data'
+                        onChange={uploadFileCinVersoHandler}
+                      ></Form.File>
+                      {uploading && <Loader />}
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Button type='submit' variant='primary'>
+                  Update
+                </Button>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+      <section className='contact-page register-page section-b-space'>
+        <Container>
+          <br></br>
+        </Container>
+        <CustomParallax
+          title='ORDER HISTORY'
+          text=''
+          img={home_top}
+          height='30em'
+        />
+        <Container>
+          {loadingOrders ? (
+            <Loader />
+          ) : errorOrders ? (
+            <Message variant='danger'>{errorOrders}</Message>
+          ) : (
+            <Table striped bordered hover responsive className='table-sm'>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>DATE</th>
+                  <th>TOTAL</th>
+                  <th>PAID</th>
+                  <th>DELIVERED</th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        )}
-      </Col>
-    </Row>
+              </thead>
+              <tbody>
+                {orders.map((order) => (
+                  <tr key={order._id}>
+                    <td>{order._id}</td>
+                    <td>{order.createdAt.substring(0, 10)}</td>
+                    <td>{order.totalPrice}</td>
+                    <td>
+                      {order.isPaid ? (
+                        order.paidAt.substring(0, 10)
+                      ) : (
+                        <i
+                          className='fas fa-times'
+                          style={{ color: 'red' }}
+                        ></i>
+                      )}
+                    </td>
+                    <td>
+                      {order.isDelivered ? (
+                        order.deliveredAt.substring(0, 10)
+                      ) : (
+                        <i
+                          className='fas fa-times'
+                          style={{ color: 'red' }}
+                        ></i>
+                      )}
+                    </td>
+                    <td>
+                      <LinkContainer to={`/order/${order._id}`}>
+                        <Button className='btn-sm' variant='light'>
+                          Details
+                        </Button>
+                      </LinkContainer>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </Container>
+      </section>
+    </>
   )
 }
 

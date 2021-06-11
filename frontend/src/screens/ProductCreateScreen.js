@@ -112,7 +112,7 @@ const ProductCreateScreen = ({ history }) => {
             <Form.Label>Image</Form.Label>
             <Form.File
               id='image-file'
-              label='Choose File'
+              label={image ? image : 'Choose File'}
               custom
               encType='multipart/form-data'
               onChange={uploadFileHandler}

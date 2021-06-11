@@ -13,6 +13,7 @@ import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { Link } from 'react-router-dom'
 import { createOrder } from '../actions/orderActions'
+import { ORDER_CREATE_RESET } from '../constants/orderConstants'
 
 const PlaceOrderScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart)
@@ -27,6 +28,7 @@ const PlaceOrderScreen = ({ history }) => {
   const { order, success, error } = orderCreate
   useEffect(() => {
     if (success) {
+      dispatch({ type: ORDER_CREATE_RESET })
       history.push(`/order/${order._id}`)
     }
     // eslint-disable-next-line
@@ -43,6 +45,7 @@ const PlaceOrderScreen = ({ history }) => {
         totalPrice: cart.totalPrice,
       })
     )
+    //const id = order._id ? order._id : 0
   }
   cart.totalPrice = Number(cart.itemsPrice) + Number(cart.shippingPrice)
   return (

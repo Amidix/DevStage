@@ -19,6 +19,7 @@ const authUser = asyncHandler(async (req, res) => {
       cinRecto: user.cinRecto,
       cinVerso: user.cinVerso,
       image: user.image,
+      address: user.address,
       token: generateToken(user._id),
     })
   } else {
@@ -71,6 +72,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       cinRecto: user.cinRecto,
       cinVerso: user.cinVerso,
       image: user.image,
+      address: user.address,
     })
   } else {
     res.status(404)
@@ -89,6 +91,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.image = req.body.image || user.image
     user.cinRecto = req.body.cinRecto || user.cinRecto
     user.cinVerso = req.body.cinVerso || user.cinVerso
+    user.address = req.body.address || user.address
     if (req.body.password) {
       user.password = req.body.password
     }
@@ -102,21 +105,13 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       cinRecto: updatedUser.cinRecto,
       cinVerso: updatedUser.cinVerso,
       image: updatedUser.image,
+      address: updatedUser.address,
       token: generateToken(updatedUser._id),
     })
   } else {
     res.status(404)
     throw new Error('User not found')
   }
-})
-
-//@desc Get all users
-//@route Get /api/users
-//@access Private/Admin
-
-const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({})
-  res.json(users)
 })
 
 //@desc Delete a user
@@ -158,6 +153,7 @@ const updateUser = asyncHandler(async (req, res) => {
     user.email = req.body.email || user.email
     user.cinRecto = req.body.cinRecto || user.cinRecto
     user.cinVerso = req.body.cinVerso || user.cinVerso
+    user.address = req.body.address || user.address
     user.image = req.body.image || user.image
     user.isAdmin = req.body.isAdmin
     user.isVerified = req.body.isVerified
@@ -172,6 +168,7 @@ const updateUser = asyncHandler(async (req, res) => {
       cinRecto: updatedUser.cinRecto,
       cinVerso: updatedUser.cinVerso,
       image: updatedUser.image,
+      address: updatedUser.address,
     })
   } else {
     res.status(404)
@@ -207,6 +204,15 @@ const getUserProductsAndInfo = asyncHandler(async (req, res) => {
     res.status(404)
     throw new Error('No Products Found')
   }
+})
+
+//@desc Get all users
+//@route Get /api/users
+//@access Private/Admin
+
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({})
+  res.json(users)
 })
 
 export {

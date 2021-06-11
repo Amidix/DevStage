@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
+import home_top from '../assets/home_top.jpg'
+import CustomParallax from '../components/CustomParallax'
 import { Button, Table, Image } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -34,7 +36,8 @@ const UserListScreen = ({ history }) => {
 
   return (
     <>
-      <h1>Users</h1>
+      <CustomParallax title='USERS' text='' img={home_top} height='30em' />
+
       {loading ? (
         <Loader />
       ) : error ? (
@@ -46,6 +49,7 @@ const UserListScreen = ({ history }) => {
               <th>ID</th>
               <th>NAME</th>
               <th>EMAIL</th>
+              <th>ADDRESS</th>
               <th>PHOTO</th>
               <th>CIN RECTO</th>
               <th>CIN VERSO</th>
@@ -59,9 +63,19 @@ const UserListScreen = ({ history }) => {
               <tr key={user.id}>
                 <td>{user._id}</td>
                 <td>{user.name}</td>
-
                 <td>
                   <a href={`mailto:${user.email}`}>{user.email}</a>
+                </td>
+                <td>
+                  {user.address && user.address.city}
+                  <br></br>
+                  {user.address && user.address.street}
+                  <br></br>
+                  {user.address && user.address.building}
+                  <br></br>
+                  {user.address && user.address.floor}
+                  <br></br>
+                  {user.address && user.address.postalCode}
                 </td>
                 <td>
                   <Image src={user.image} fluid></Image>

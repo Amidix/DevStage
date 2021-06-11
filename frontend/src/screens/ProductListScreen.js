@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
+import home_top from '../assets/home_top.jpg'
+import CustomParallax from '../components/CustomParallax'
 import { Button, Table, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
@@ -40,7 +42,12 @@ const ProductListScreen = ({ history, match }) => {
     <>
       <Row className='align-items-center'>
         <Col>
-          <h1>Products</h1>{' '}
+          <CustomParallax
+            title='PRODUCTS'
+            text=''
+            img={home_top}
+            height='30em'
+          />
         </Col>
       </Row>
       {loadingDelete && <Loader />}
