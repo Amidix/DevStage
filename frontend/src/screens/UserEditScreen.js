@@ -124,23 +124,7 @@ const UserEditScreen = ({ match, history }) => {
       })
     )
   }
-
-  return (
-    <>
-      <Link to='/admin/userlist' className='btn btn-light my-3'>
-        Go back
-      </Link>
-      <FormContainer>
-        <h1>Edit User</h1>
-        {loadingUpdate && <Loader />}
-        {errorUpdate && <Message varaint='danger'>{errorUpdate}</Message>}
-        {loading ? (
-          <Loader />
-        ) : error ? (
-          <Message variant='danger'>{error}</Message>
-        ) : (
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId='name'>
+  /*<Form.Group controlId='name'>
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type='name'
@@ -195,7 +179,22 @@ const UserEditScreen = ({ match, history }) => {
                 onChange={uploadFileCinVersoHandler}
               ></Form.File>
               {uploading && <Loader />}
-            </Form.Group>
+            </Form.Group> */
+  return (
+    <>
+      <Link to='/admin/userlist' className='btn btn-light my-3'>
+        Go back
+      </Link>
+      <FormContainer>
+        <h1>Edit User</h1>
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message varaint='danger'>{errorUpdate}</Message>}
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant='danger'>{error}</Message>
+        ) : (
+          <Form onSubmit={submitHandler}>
             <Form.Group controlId='isadmin'>
               <Form.Check
                 type='checkbox'
