@@ -52,6 +52,21 @@ const deleteProduct = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc update count in stock of a product
+// @route GET /api/products/:id/:qty
+// @access Private
+const updateCountInStockProduct = asyncHandler(async (req, res) => {
+  const product = await Product.findById(req.params.id)
+  if (product) {
+    product.countInStock = product.countInStock - req.params.qty
+    const updatedProduct = await product.save()
+    res.json(updatedProduct)
+  } else {
+    res.status(404)
+    throw new Error('Product not found')
+  }
+})
+
 // @desc Create a product
 // @route GET /api/products
 // @access Private
@@ -142,4 +157,5 @@ export {
   createProduct,
   updateProduct,
   createProductReview,
+  updateCountInStockProduct,
 }

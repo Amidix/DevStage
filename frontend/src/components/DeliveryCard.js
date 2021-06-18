@@ -27,7 +27,13 @@ export default function DeliveryCard(props) {
               </Col>
             </Row>
           </Card.Title>
-          <Card.Text className='mb-0 pb-0'>{props.description}</Card.Text>
+          <Card.Text className='mb-0 pb-0'>
+            {' '}
+            Chef :{' '}
+            <Link className='link' to={`/profile/${props.chefId}`}>
+              {props.chef}
+            </Link>
+          </Card.Text>
         </Card.Body>
         <Link to={`/product/${props.id}`}>
           <Card.Img

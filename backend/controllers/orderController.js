@@ -115,13 +115,15 @@ const getOrders = asyncHandler(async (req, res) => {
 const getVendorOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({
     isPaid: true,
-  }).populate({
-    path: 'orderItems.product',
-    match: {
-      user: req.user._id,
-    },
-    select: 'user',
   })
+    .populate({
+      path: 'orderItems.product',
+      match: {
+        user: req.user._id,
+      },
+      select: 'user',
+    })
+    .sort({ paidAt: -1 })
 
   res.json(orders)
 })

@@ -13,11 +13,27 @@ import Loader from './Loader'
 import pizza from '../assets/pizza.png'
 import pizzaColor from '../assets/pizzaColor.png'
 import pasta from '../assets/ravioli.png'
+import pastaColor from '../assets/ravioliColor.png'
 import chicken from '../assets/chicken-leg.png'
-
+import chickenColor from '../assets/chicken-legColor.png'
+import FilterBox from '../components/FilterBox.js'
 import hamburger from '../assets/hamburger.png'
+import hamburgerColor from '../assets/hamburgerColor.png'
 import fork from '../assets/fork.png'
-import sweets from '../assets/cake.png'
+import forkColor from '../assets/forkColor.png'
+import sweet from '../assets/cake.png'
+import sweetColor from '../assets/cakeColor.png'
+import sandwich from '../assets/sandwich.png'
+import sandwichColor from '../assets/sandwichColor.png'
+import barbecue from '../assets/barbecue.png'
+import barbecueColor from '../assets/barbecueColor.png'
+import crepe from '../assets/crepe.png'
+import crepeColor from '../assets/crepeColor.png'
+import tajine from '../assets/tajine.png'
+import tajineColor from '../assets/tajineColor.png'
+import taco from '../assets/taco.png'
+import tacoColor from '../assets/tacoColor.png'
+import { Col } from 'react-bootstrap'
 
 const DeliveryMenu = () => {
   const dispatch = useDispatch()
@@ -39,7 +55,8 @@ const DeliveryMenu = () => {
             ? item.name.toUpperCase().includes(search) ||
               item.description.toUpperCase().includes(search) ||
               item.price.toString().toUpperCase().includes(search)
-            : item.category.toUpperCase().includes(category)
+            : item.category.toUpperCase().includes(category) ||
+              item.name.toUpperCase().includes(category)
         )
         .map((item) => cardRender(item))
     }
@@ -60,6 +77,8 @@ const DeliveryMenu = () => {
       description={product.description}
       num={product.qty}
       id={product._id}
+      chef={product.user && product.user.name}
+      chefId={product.user && product.user._id}
     />
   )
 
@@ -83,70 +102,105 @@ const DeliveryMenu = () => {
       </Form>
 
       <h1 className='pt-5 mx-auto'>Menu</h1>
+
+      <div className='filters'>
+        <FilterBox
+          category={category}
+          filter=''
+          onClick={() => setCategory('')}
+          logo={fork}
+          logoColor={forkColor}
+          filterName='All'
+        ></FilterBox>
+        <FilterBox
+          category={category}
+          filter='BURGER'
+          onClick={() => setCategory('BURGER')}
+          logo={hamburger}
+          logoColor={hamburgerColor}
+          filterName='Burgers'
+        ></FilterBox>
+        <FilterBox
+          category={category}
+          filter='PIZZA'
+          onClick={() => setCategory('PIZZA')}
+          logo={pizza}
+          logoColor={pizzaColor}
+          filterName='Pizza'
+        ></FilterBox>
+        <FilterBox
+          category={category}
+          filter='SWEETS'
+          onClick={() => setCategory('SWEETS')}
+          logo={sweet}
+          logoColor={sweetColor}
+          filterName='Sweets'
+        ></FilterBox>
+        <FilterBox
+          category={category}
+          filter='PASTA'
+          onClick={() => setCategory('PASTA')}
+          logo={pasta}
+          logoColor={pastaColor}
+          filterName='Pasta'
+        ></FilterBox>
+        <FilterBox
+          category={category}
+          filter='CHICKEN'
+          logo={chicken}
+          logoColor={chickenColor}
+          onClick={() => setCategory('CHICKEN')}
+          filterName='Chicken'
+        ></FilterBox>
+        <FilterBox
+          category={category}
+          filter='SANDWICH'
+          onClick={() => setCategory('SANDWICH')}
+          logo={sandwich}
+          logoColor={sandwichColor}
+          filterName='Sandwich'
+        ></FilterBox>
+        <FilterBox
+          category={category}
+          filter='BARBECUE'
+          onClick={() => setCategory('BARBECUE')}
+          logo={barbecue}
+          logoColor={barbecueColor}
+          filterName='Barbecue'
+        ></FilterBox>
+        <FilterBox
+          category={category}
+          filter='CREPE'
+          onClick={() => setCategory('CREPE')}
+          logo={crepe}
+          logoColor={crepeColor}
+          filterName='Crepe'
+        ></FilterBox>
+        <FilterBox
+          category={category}
+          filter='TRADITIONEL'
+          onClick={() => setCategory('TRADITIONEL')}
+          logo={tajine}
+          logoColor={tajineColor}
+          filterName='Traditionel'
+        ></FilterBox>
+
+        <br></br>
+
+        <FilterBox
+          category={category}
+          filter='MEXICAIN'
+          onClick={() => setCategory('MEXICAIN')}
+          logo={taco}
+          logoColor={tacoColor}
+          filterName='Mexicain'
+        ></FilterBox>
+      </div>
       {message ? (
         <Message>You cant add meals from different chefs</Message>
       ) : (
         ''
       )}
-      <div className='filters'>
-        <Button
-          variant='light'
-          className='filters__filter'
-          onClick={() => setCategory('')}
-        >
-          <Card.Img src={fork} className='filters__filter__icon' />{' '}
-          <h2 className='filters__filter__title'>All</h2>
-        </Button>
-        <Button
-          variant='light'
-          className='filters__filter'
-          onClick={() => setCategory('BURGER')}
-        >
-          <Card.Img src={hamburger} className='filters__filter__icon' />{' '}
-          <h2 className='filters__filter__title'>Burger</h2>
-        </Button>
-
-        <Button
-          variant='light'
-          className='filters__filter'
-          onClick={() => setCategory('PIZZA')}
-        >
-          <Card.Img
-            src={category === 'PIZZA' ? pizzaColor : pizza}
-            className='filters__filter__icon'
-          />{' '}
-          <h2
-            className='filters__filter__title'
-            style={{ fontWeight: category === 'PIZZA' ? 'bold' : '' }}
-          >
-            Pizza
-          </h2>
-        </Button>
-        <Button
-          variant='light'
-          className='filters__filter'
-          onClick={() => setCategory('SWEETS')}
-        >
-          <Card.Img src={sweets} className='filters__filter__icon' />{' '}
-          <h2 className='filters__filter__title'>Sweets</h2>
-        </Button>
-        <Button
-          variant='light'
-          className='filters__filter'
-          onClick={() => setCategory('PASTA')}
-        >
-          <Card.Img src={pasta} className='filters__filter__icon' />{' '}
-          <h2 className='filters__filter__title'>Pasta</h2>
-        </Button>
-        <Button
-          variant='light'
-          className='filters__filter'
-          onClick={() => setCategory('CHICKEN')}
-        >
-          <Card.Img src={chicken} className='filters__filter__icon' />{' '}
-          <h2 className='filters__filter__title'>Chicken</h2>
-        </Button>
-      </div>
       <Row className='pb-3'>{appetizer}</Row>
       {appetizer.length === 0 && (
         <div className='text-center mt-5'>

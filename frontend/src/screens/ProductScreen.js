@@ -75,7 +75,7 @@ const ProductScreen = ({ history, match }) => {
         title='Product Details'
         text=''
         img={home_top}
-        height='8em'
+        height='30em'
       />
       <Container>
         <Link className='btn btn-light my-3' to='/menu'>

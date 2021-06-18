@@ -6,6 +6,7 @@ import {
   updateProduct,
   createProduct,
   createProductReview,
+  updateCountInStockProduct,
 } from '../controllers/productController.js'
 import { protect, admin, verified } from '../middleware/authMiddleware.js'
 
@@ -18,5 +19,6 @@ router
   .get(getProductById)
   .delete(protect, deleteProduct)
   .put(protect, updateProduct)
+router.route('/:id/:qty').put(protect, updateCountInStockProduct)
 
 export default router

@@ -24,6 +24,7 @@ import {
   ORDER_PAY_RESET,
   ORDER_DELIVER_RESET,
 } from '../constants/orderConstants'
+import { updateCountInStock } from '../actions/productActions'
 
 const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id
@@ -77,6 +78,12 @@ const OrderScreen = ({ match, history }) => {
 
   const successPaymentHandler = () => {
     dispatch(payOrder(orderId))
+
+    //we need to substract the qty from the count in stock
+    Object.values(order.orderItems).map((item) => {
+      console.log('id', item._id, 'qty', item.qty)
+      dispatch(updateCountInStock(item.product, item.qty))
+    })
   }
 
   const deliverHandler = () => {
