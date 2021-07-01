@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import home_top from '../assets/home_top.jpg'
 import CustomParallax from '../components/CustomParallax'
 import {
@@ -19,16 +19,37 @@ import {
   payOrder,
   deliverOrder,
 } from '../actions/orderActions'
+import { listVendorOrders } from '../actions/orderActions'
+
 import {
   ORDER_DETAILS_RESET,
   ORDER_PAY_RESET,
   ORDER_DELIVER_RESET,
 } from '../constants/orderConstants'
 import { updateCountInStock } from '../actions/productActions'
+import { resetCart } from '../actions/cartActions'
 
 const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id
+
+  const [isVendorOrder, setisVendorOrder] = useState(false)
+
   const dispatch = useDispatch()
+
+  const orderListVendor = useSelector((state) => state.orderListVendor)
+  const { orders: vendorOrder } = orderListVendor
+
+  //some logic to make sure its the vendors order before we show the mark as delivered button
+  vendorOrder.map((order) =>
+    Object.values(order.orderItems).map((item) =>
+      item.products != null
+        ? order._id == orderId
+          ? setisVendorOrder(true)
+          : null
+        : null
+    )
+  )
+  console.log(vendorOrder)
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error, success: successDetails } = orderDetails
 
@@ -51,12 +72,13 @@ const OrderScreen = ({ match, history }) => {
 
   useEffect(() => {
     dispatch(getOrderDetails(orderId))
+
     if (successDetails) {
       dispatch({ type: ORDER_DETAILS_RESET })
     }
   }, [dispatch, orderId, successDetails])
 
-  if (!loading) {
+  if (!loading && order != undefined) {
     order.itemsPrice = order.orderItems.reduce(
       (acc, item) => acc + item.price * item.qty,
       0
@@ -78,8 +100,9 @@ const OrderScreen = ({ match, history }) => {
 
   const successPaymentHandler = () => {
     dispatch(payOrder(orderId))
+    dispatch(resetCart())
 
-    //we need to substract the qty from the count in stock
+    //we need to substract the qty from the count in stoc
     Object.values(order.orderItems).map((item) => {
       console.log('id', item._id, 'qty', item.qty)
       dispatch(updateCountInStock(item.product, item.qty))
@@ -99,7 +122,7 @@ const OrderScreen = ({ match, history }) => {
         title='Order Details'
         text=''
         img={home_top}
-        height='40em'
+        height={200}
       />
 
       <Container>

@@ -9,23 +9,27 @@ import { addToCart, removeFromCart } from '../actions/cartActions'
 
 //const productId
 
-const CustomButtonGroup = ({ id }) => {
+const CustomButtonGroup = ({ id, cis }) => {
   const dispatch = useDispatch()
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
   var idcar = cartItems[0] ? cartItems[0].product : id
   var pro = cartItems.find((e) => e.product == id)
+  console.log('cis :', cis)
   if (pro === undefined) {
     pro = 0
   }
   const addCartElement = (
-    <Button
-      className='py-2'
-      variant='outline-dark'
-      onClick={(e) => dispatch(addToCart(id, idcar, 1))}
-    >
-      Add to Cart
-    </Button>
+    <>
+      <Button
+        className='py-2'
+        variant='outline-dark'
+        onClick={(e) => dispatch(addToCart(id, idcar, 1))}
+        disabled={cis <= 0}
+      >
+        Add to Cart
+      </Button>
+    </>
   )
   console.log('product id:', id)
   const plusMinusElement = (

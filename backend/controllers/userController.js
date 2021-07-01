@@ -13,6 +13,8 @@ const authUser = asyncHandler(async (req, res) => {
     res.json({
       _id: user._id,
       name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       isAdmin: user.isAdmin,
       isVerified: user.isVerified,
@@ -31,7 +33,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route POST api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body
+  const { name, email, password, firstName, lastName } = req.body
   const userExists = await User.findOne({ email })
   if (userExists) {
     res.status(400)
@@ -39,6 +41,8 @@ const registerUser = asyncHandler(async (req, res) => {
   }
   const user = await User.create({
     name,
+    firstName,
+    lastName,
     email,
     password,
   })
@@ -46,6 +50,8 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       _id: user._id,
       name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       isAdmin: user.isAdmin,
       isVerified: user.isVerified,
@@ -66,6 +72,8 @@ const getUserProfile = asyncHandler(async (req, res) => {
     res.json({
       _id: user._id,
       name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       isAdmin: user.isAdmin,
       isVerified: user.isVerified,
@@ -87,6 +95,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
   if (user) {
     user.name = req.body.name || user.name
+    user.firstName = req.body.firstName || user.firstName
+    user.lastName = req.body.lastName || user.lastName
     user.email = req.body.email || user.email
     user.image = req.body.image || user.image
     user.cinRecto = req.body.cinRecto || user.cinRecto
@@ -99,6 +109,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
       isVerified: updatedUser.isVerified,
@@ -150,6 +162,8 @@ const updateUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id)
   if (user) {
     user.name = req.body.name || user.name
+    user.firstName = req.body.firstName || user.firstName
+    user.lastName = req.body.lastName || user.lastName
     user.email = req.body.email || user.email
     user.cinRecto = req.body.cinRecto || user.cinRecto
     user.cinVerso = req.body.cinVerso || user.cinVerso
@@ -162,6 +176,8 @@ const updateUser = asyncHandler(async (req, res) => {
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
       isVerified: updatedUser.isVerified,
@@ -196,7 +212,7 @@ const getUserProducts = asyncHandler(async (req, res) => {
 const getUserProductsAndInfo = asyncHandler(async (req, res) => {
   const myproducts = await Product.find({
     user: { _id: req.params.id },
-  }).populate('user', '_id name email image isVerified')
+  }).populate('user', '_id name email image isVerified firstName lastName')
   //const user = await User.findById(req.user._id)
   if (myproducts) {
     res.json(myproducts)
@@ -211,8 +227,14 @@ const getUserProductsAndInfo = asyncHandler(async (req, res) => {
 //@access Private/Admin
 
 const getUsers = asyncHandler(async (req, res) => {
+  const pageSize = 20
+  const page = req.query.pageNumber || 1
+  const count = await User.count({})
+  const pages = Math.ceil(count / pageSize)
   const users = await User.find({})
-  res.json(users)
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
+  res.json({ users, page, pages })
 })
 
 export {

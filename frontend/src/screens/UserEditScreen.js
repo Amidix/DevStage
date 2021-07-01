@@ -33,6 +33,11 @@ const UserEditScreen = ({ match, history }) => {
     success: successUpdate,
   } = userUpdate
 
+  const emailData = {
+    name: user.name,
+    email: user.email,
+  }
+
   const uploadFileCinRectoHandler = async (e) => {
     const file = e.target.files[0]
     const formData = new FormData()
@@ -123,6 +128,7 @@ const UserEditScreen = ({ match, history }) => {
         cinVerso,
       })
     )
+    !user.isVerified && axios.post('/api/mailing', emailData)
   }
   /*<Form.Group controlId='name'>
               <Form.Label>Name</Form.Label>

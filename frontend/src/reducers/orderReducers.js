@@ -122,7 +122,12 @@ export const orderListReducer = (state = { orders: [] }, action) => {
     case ORDER_LIST_REQUEST:
       return { loading: true }
     case ORDER_LIST_SUCCESS:
-      return { loading: false, orders: action.payload }
+      return {
+        loading: false,
+        orders: action.payload.orders,
+        pages: action.payload.pages,
+        page: action.payload.page,
+      }
     case ORDER_LIST_FAIL:
       return { loading: false, error: action.payload }
 
@@ -136,7 +141,12 @@ export const orderListVendorReducer = (state = { orders: [] }, action) => {
     case ORDER_LIST_VENDOR_REQUEST:
       return { loading: true }
     case ORDER_LIST_VENDOR_SUCCESS:
-      return { loading: false, orders: action.payload }
+      return {
+        loading: false,
+        orders: action.payload.orders,
+        pages: action.payload.pages,
+        page: action.payload.page,
+      }
     case ORDER_LIST_VENDOR_FAIL:
       return { loading: false, error: action.payload }
     case ORDER_LIST_VENDOR_RESET:

@@ -32,6 +32,7 @@ import {
 } from '../constants/userConstants'
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants'
 import axios from 'axios'
+import { CART_RESET } from '../constants/cartConstants'
 
 export const login = (email, password) => async (dispach) => {
   try {
@@ -68,40 +69,42 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_DETAILS_RESET })
   dispatch({ type: USER_LIST_RESET })
   dispatch({ type: ORDER_LIST_MY_RESET })
+  dispatch({ type: CART_RESET })
 }
 
-export const register = (name, email, password) => async (dispach) => {
-  try {
-    dispach({ type: USER_REGISTER_REQUEST })
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+export const register =
+  (name, email, password, firstName, lastName) => async (dispach) => {
+    try {
+      dispach({ type: USER_REGISTER_REQUEST })
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+      const { data } = await axios.post(
+        '/api/users',
+        { name, email, password, firstName, lastName },
+        config
+      )
+      dispach({
+        type: USER_REGISTER_SUCCESS,
+        payload: data,
+      })
+      dispach({
+        type: USER_LOGIN_SUCCESS,
+        payload: data,
+      })
+      localStorage.setItem('userInfo', JSON.stringify(data))
+    } catch (error) {
+      dispach({
+        type: USER_REGISTER_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
     }
-    const { data } = await axios.post(
-      '/api/users',
-      { name, email, password },
-      config
-    )
-    dispach({
-      type: USER_REGISTER_SUCCESS,
-      payload: data,
-    })
-    dispach({
-      type: USER_LOGIN_SUCCESS,
-      payload: data,
-    })
-    localStorage.setItem('userInfo', JSON.stringify(data))
-  } catch (error) {
-    dispach({
-      type: USER_REGISTER_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
   }
-}
 
 export const getUserDetails = (id) => async (dispach, getState) => {
   try {
@@ -161,33 +164,38 @@ export const updateUserProfile = (user) => async (dispach, getState) => {
   }
 }
 
-export const listUsers = (id) => async (dispach, getState) => {
-  try {
-    dispach({ type: USER_LIST_REQUEST })
-    const {
-      userLogin: { userInfo },
-    } = getState()
+export const listUsers =
+  (pageNumber = '') =>
+  async (dispach, getState) => {
+    try {
+      dispach({ type: USER_LIST_REQUEST })
+      const {
+        userLogin: { userInfo },
+      } = getState()
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+      const { data } = await axios.get(
+        `/api/users?pageNumber=${pageNumber}`,
+        config
+      )
+      dispach({
+        type: USER_LIST_SUCCESS,
+        payload: data,
+      })
+    } catch (error) {
+      dispach({
+        type: USER_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
     }
-    const { data } = await axios.get(`/api/users`, config)
-    dispach({
-      type: USER_LIST_SUCCESS,
-      payload: data,
-    })
-  } catch (error) {
-    dispach({
-      type: USER_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
   }
-}
 
 export const deleteUser = (id) => async (dispach, getState) => {
   try {

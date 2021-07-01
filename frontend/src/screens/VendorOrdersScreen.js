@@ -7,12 +7,20 @@ import Loader from '../components/Loader'
 import { listVendorOrders } from '../actions/orderActions'
 import CustomParallax from '../components/CustomParallax'
 import home_top from '../assets/home_top.jpg'
+import Paginate from '../components/Paginate'
 
-const VendorOrdersScreen = ({ history }) => {
+const VendorOrdersScreen = ({ history, match }) => {
   const dispatch = useDispatch()
+  const pageNumber = match.params.pageNumber || 1
 
   const orderListVendor = useSelector((state) => state.orderListVendor)
-  const { loading: loadingOrders, error: errorOrders, orders } = orderListVendor
+  const {
+    loading: loadingOrders,
+    error: errorOrders,
+    orders,
+    page,
+    pages,
+  } = orderListVendor
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -21,9 +29,9 @@ const VendorOrdersScreen = ({ history }) => {
     if (!userInfo) {
       history.push('/login')
     } else {
-      dispatch(listVendorOrders())
+      dispatch(listVendorOrders(pageNumber))
     }
-  }, [dispatch, history, userInfo])
+  }, [dispatch, history, userInfo, pageNumber])
 
   console.log('my orders', orders)
   return (
@@ -98,6 +106,7 @@ const VendorOrdersScreen = ({ history }) => {
           </Col>
         </Row>
       </Container>
+      <Paginate page={page} pages={pages} link2={`vendororders`}></Paginate>
     </>
   )
 }

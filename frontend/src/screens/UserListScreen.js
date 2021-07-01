@@ -7,12 +7,23 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listUsers, deleteUser } from '../actions/userActions'
+import Paginate from '../components/Paginate'
+import { Container } from 'reactstrap'
 
-const UserListScreen = ({ history }) => {
+const UserListScreen = ({ history, match }) => {
+  const pageNumber = match.params.pageNumber || 1
+
+  const height =
+    window.innerHeight < 1200
+      ? window.innerHeight < 400
+        ? '10em'
+        : '13em'
+      : '18em'
+
   const dispatch = useDispatch()
 
   const userList = useSelector((state) => state.userList)
-  const { loading, error, users } = userList
+  const { loading, error, users, page, pages } = userList
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -22,11 +33,11 @@ const UserListScreen = ({ history }) => {
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      dispatch(listUsers())
+      dispatch(listUsers(pageNumber))
     } else {
       history.push('/login')
     }
-  }, [dispatch, history, successDelete, userInfo])
+  }, [dispatch, history, successDelete, userInfo, pageNumber])
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure')) {
@@ -78,13 +89,28 @@ const UserListScreen = ({ history }) => {
                   {user.address && user.address.postalCode}
                 </td>
                 <td>
-                  <Image src={user.image} fluid></Image>
+                  <Image
+                    src={user.image}
+                    fluid
+                    variant='top'
+                    style={{ objectFit: 'cover', height: height }}
+                  ></Image>
                 </td>
                 <td>
-                  <Image src={user.cinRecto} fluid></Image>
+                  <Image
+                    src={user.cinRecto}
+                    fluid
+                    variant='top'
+                    style={{ objectFit: 'cover', height: height }}
+                  ></Image>
                 </td>
                 <td>
-                  <Image src={user.cinVerso} fluid></Image>
+                  <Image
+                    src={user.cinVerso}
+                    fluid
+                    variant='top'
+                    style={{ objectFit: 'cover', height: height }}
+                  ></Image>
                 </td>
                 <td>
                   {user.isAdmin ? (
@@ -119,6 +145,7 @@ const UserListScreen = ({ history }) => {
           </tbody>
         </Table>
       )}
+      <Paginate page={page} pages={pages} link2={`admin/userlist`}></Paginate>
     </>
   )
 }

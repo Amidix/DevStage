@@ -146,7 +146,9 @@ const ProductScreen = ({ history, match }) => {
                   </ListGroup.Item>
                   <ListGroup.Item align='center'>
                     {' '}
-                    <CustomButtonGroup id={product._id} />
+                    {product.countInStock > 0 && (
+                      <CustomButtonGroup id={product._id} />
+                    )}
                   </ListGroup.Item>
                 </Card>
               </Col>

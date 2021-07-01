@@ -24,11 +24,15 @@ import {
 } from '../constants/productConstants'
 
 export const listProducts =
-  (keyword = '') =>
+  (keyword = '', pageNumber = '') =>
   async (dispach) => {
     try {
       dispach({ type: PRODUCT_LIST_REQUEST })
-      const { data } = await axios.get(`/api/products?keyword=${keyword}`)
+
+      const { data } = await axios.get(
+        `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+      )
+
       dispach({
         type: PRODUCT_LIST_SUCCESS,
         payload: data,

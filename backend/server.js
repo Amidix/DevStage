@@ -9,6 +9,7 @@ import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import uploadRoutes from './routes/uploadRoutes.js'
+import mailingRoutes from './routes/mailingRoutes.js'
 
 dotenv.config()
 
@@ -16,7 +17,7 @@ connectDB()
 
 const app = express()
 
-if (process.ENV_NODE_ENV === 'development') {
+if (process.env_NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 
@@ -30,9 +31,10 @@ app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
 app.use('/api/upload', uploadRoutes)
+app.use('/api/mailing', mailingRoutes)
 
-const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
+const __dirname = path.resolve() //cuerrent path
+app.use('/uploads', express.static(path.join(__dirname, '/uploads'))) //make file static
 
 app.use(notFound)
 app.use(errorHandler)

@@ -1,13 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-  
-
+import dotenv from 'dotenv'
 import { Provider } from 'react-redux'
 import store from './store'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-
+dotenv.config()
 ReactDOM.render(
   <Provider store={store}>
     <App />

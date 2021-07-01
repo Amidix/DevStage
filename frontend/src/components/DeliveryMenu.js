@@ -79,6 +79,7 @@ const DeliveryMenu = () => {
       id={product._id}
       chef={product.user && product.user.name}
       chefId={product.user && product.user._id}
+      countInStock={product.countInStock}
     />
   )
 
@@ -201,12 +202,15 @@ const DeliveryMenu = () => {
       ) : (
         ''
       )}
+      {loading && <Loader />}
       <Row className='pb-3'>{appetizer}</Row>
-      {appetizer.length === 0 && (
-        <div className='text-center mt-5'>
-          <h4>Your search didn't match any item</h4>
-        </div>
-      )}
+      {appetizer && !loading
+        ? appetizer.length === 0 && (
+            <div className='text-center mt-5'>
+              <h4>Your search didn't match any item</h4>
+            </div>
+          )
+        : null}
     </Container>
   )
 }

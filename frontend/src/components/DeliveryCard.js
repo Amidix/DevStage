@@ -42,7 +42,7 @@ export default function DeliveryCard(props) {
             src={props.img}
           />
         </Link>
-        <CustomButtonGroup id={props.id} />
+        <CustomButtonGroup id={props.id} cis={props.countInStock} />
       </Card>
     </Col>
   )

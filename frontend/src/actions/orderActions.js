@@ -175,58 +175,68 @@ export const listMyOrders = () => async (dispach, getState) => {
   }
 }
 
-export const listOrders = () => async (dispach, getState) => {
-  try {
-    dispach({ type: ORDER_LIST_REQUEST })
-    const {
-      userLogin: { userInfo },
-    } = getState()
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+export const listOrders =
+  (pageNumber = '') =>
+  async (dispach, getState) => {
+    try {
+      dispach({ type: ORDER_LIST_REQUEST })
+      const {
+        userLogin: { userInfo },
+      } = getState()
+      console.log('pages' + pageNumber)
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+      const { data } = await axios.get(
+        `/api/orders?pageNumber=${pageNumber}`,
+        config
+      )
+      dispach({
+        type: ORDER_LIST_SUCCESS,
+        payload: data,
+      })
+    } catch (error) {
+      dispach({
+        type: ORDER_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
     }
-    const { data } = await axios.get(`/api/orders`, config)
-    dispach({
-      type: ORDER_LIST_SUCCESS,
-      payload: data,
-    })
-  } catch (error) {
-    dispach({
-      type: ORDER_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
   }
-}
 
-export const listVendorOrders = () => async (dispach, getState) => {
-  try {
-    dispach({ type: ORDER_LIST_VENDOR_REQUEST })
-    const {
-      userLogin: { userInfo },
-    } = getState()
+export const listVendorOrders =
+  (pageNumber = '') =>
+  async (dispach, getState) => {
+    try {
+      dispach({ type: ORDER_LIST_VENDOR_REQUEST })
+      const {
+        userLogin: { userInfo },
+      } = getState()
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+      const { data } = await axios.get(
+        `/api/orders/vendororders?pageNumber=${pageNumber}`,
+        config
+      )
+      dispach({
+        type: ORDER_LIST_VENDOR_SUCCESS,
+        payload: data,
+      })
+    } catch (error) {
+      dispach({
+        type: ORDER_LIST_VENDOR_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
     }
-    const { data } = await axios.get(`/api/orders/vendororders`, config)
-    dispach({
-      type: ORDER_LIST_VENDOR_SUCCESS,
-      payload: data,
-    })
-  } catch (error) {
-    dispach({
-      type: ORDER_LIST_VENDOR_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
   }
-}

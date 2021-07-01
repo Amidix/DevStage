@@ -13,6 +13,8 @@ import home_top from '../assets/home_top.jpg'
 
 const ProfileScreen = ({ location, history }) => {
   const [name, setName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [cinRecto, setCinRecto] = useState('')
   const [cinVerso, setCinVerso] = useState('')
@@ -32,7 +34,7 @@ const ProfileScreen = ({ location, history }) => {
   const dispatch = useDispatch()
 
   const userDetails = useSelector((state) => state.userDetails)
-  const { loading, error, user } = userDetails
+  const { loading, error, user, success: successDetails } = userDetails
 
   const orderListMy = useSelector((state) => state.orderListMy)
   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
@@ -41,7 +43,7 @@ const ProfileScreen = ({ location, history }) => {
   const { userInfo } = userLogin
 
   const userUpdateProfile = useSelector((state) => state.userUpdateProfile)
-  const { success } = userUpdateProfile
+  const { success, loading: loadingUpdate } = userUpdateProfile
 
   //image
   const uploadFileHandler = async (e) => {
@@ -112,6 +114,8 @@ const ProfileScreen = ({ location, history }) => {
         updateUserProfile({
           id: user._id,
           name,
+          firstName,
+          lastName,
           email,
           password,
           cinRecto,
@@ -132,6 +136,8 @@ const ProfileScreen = ({ location, history }) => {
         dispatch(listMyOrders())
       } else {
         setName(user.name)
+        setFirstName(user.firstName)
+        setLastName(user.lastName)
         setEmail(user.email)
         setCinRecto(user.cinRecto)
         setCinVerso(user.cinVerso)
@@ -143,7 +149,7 @@ const ProfileScreen = ({ location, history }) => {
         setImage(user.image)
       }
     }
-  }, [dispatch, history, userInfo, user, success])
+  }, [dispatch, history, userInfo, user, success, successDetails])
 
   return (
     <>
@@ -156,13 +162,38 @@ const ProfileScreen = ({ location, history }) => {
               {error && <Message variant='danger'>{error}</Message>}
               {success && <Message variant='success'>Profile Updated</Message>}
               {loading && <Loader />}
+              {loadingUpdate && <Loader />}
+
               <h3>PERSONAL DETAILS</h3>
               <br></br>
               <Form className='theme-form' onSubmit={submitHandler}>
                 <Row>
                   <Col md='6'>
+                    <Form.Group controlId='firstName'>
+                      <Form.Label>First Name</Form.Label>
+                      <Form.Control
+                        type='name'
+                        placeholder='Enter firstName'
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col md='6'>
+                    <Form.Group controlId='lastName'>
+                      <Form.Label>last Name</Form.Label>
+                      <Form.Control
+                        type='name'
+                        placeholder='Enter last Name'
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                      ></Form.Control>
+                    </Form.Group>
+                  </Col>
+
+                  <Col md='6'>
                     <Form.Group controlId='name'>
-                      <Form.Label>Name</Form.Label>
+                      <Form.Label>Username</Form.Label>
                       <Form.Control
                         type='name'
                         placeholder='Enter name'
@@ -271,7 +302,7 @@ const ProfileScreen = ({ location, history }) => {
                       <Form.Label>Image</Form.Label>
                       <Form.File
                         id='image-file'
-                        label={image ? image : 'Choose File'}
+                        label={image ? image.slice(50) : 'Choose File'}
                         custom
                         encType='multipart/form-data'
                         onChange={uploadFileHandler}
@@ -283,7 +314,7 @@ const ProfileScreen = ({ location, history }) => {
                       <Form.Label>CIN Recto</Form.Label>
                       <Form.File
                         id='Image-file'
-                        label={cinRecto ? cinRecto : 'Choose File'}
+                        label={cinRecto ? cinRecto.slice(50) : 'Choose File'}
                         custom
                         encType='multipart/form-data'
                         onChange={uploadFileCinRectoHandler}
@@ -295,15 +326,15 @@ const ProfileScreen = ({ location, history }) => {
                       <Form.Label>CIN Verso</Form.Label>
                       <Form.File
                         id='Image-file'
-                        label={cinVerso ? cinVerso : 'Choose File'}
+                        label={cinVerso ? cinVerso.slice(50) : 'Choose File'}
                         custom
                         encType='multipart/form-data'
                         onChange={uploadFileCinVersoHandler}
                       ></Form.File>
-                      {uploading && <Loader />}
                     </Form.Group>
                   </Col>
                 </Row>
+                {uploading && <Loader />}
                 <Button type='submit' variant='primary'>
                   Update
                 </Button>

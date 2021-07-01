@@ -76,7 +76,13 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 // @route GET /api/orders/:id/deliiver
 // @access Private
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
-  const order = await Order.findById(req.params.id)
+  const order = await Order.findById(req.params.id).populate({
+    path: 'orderItems.product',
+    match: {
+      user: req.user._id,
+    },
+    select: 'user',
+  })
 
   if (order) {
     order.isDelivered = true
@@ -103,8 +109,17 @@ const getMyOrders = asyncHandler(async (req, res) => {
 // @route GET /api/orders
 // @access Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({}).populate('user', 'id name')
-  res.json(orders)
+  const pageSize = 30
+  const page = req.query.pageNumber || 1
+  const count = await Order.count({})
+  const pages = Math.ceil(count / pageSize)
+
+  const orders = await Order.find({})
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
+    .populate('user', 'id name')
+    .sort({ createdAt: -1 })
+  res.json({ orders, page, pages })
 })
 
 // @desc Get logged in vendor orders
@@ -113,6 +128,10 @@ const getOrders = asyncHandler(async (req, res) => {
 
 /*, orderItems:{product : req.user._id}*/
 const getVendorOrders = asyncHandler(async (req, res) => {
+  const pageSize = 20
+  const page = req.query.pageNumber || 1
+  const count = await Order.count({})
+  const pages = Math.ceil(count / pageSize)
   const orders = await Order.find({
     isPaid: true,
   })
@@ -123,9 +142,11 @@ const getVendorOrders = asyncHandler(async (req, res) => {
       },
       select: 'user',
     })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
     .sort({ paidAt: -1 })
 
-  res.json(orders)
+  res.json({ orders, page, pages })
 })
 
 export {

@@ -9,6 +9,8 @@ import { register } from '../actions/userActions'
 
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -29,7 +31,7 @@ const RegisterScreen = ({ location, history }) => {
     if (password !== confirmPassword) {
       setMessage('Passwords do not match')
     } else {
-      dispatch(register(name, email, password))
+      dispatch(register(name, email, password, firstName, lastName))
     }
   }
 
@@ -42,12 +44,30 @@ const RegisterScreen = ({ location, history }) => {
       {loading && <Loader />}
       <Form onSubmit={submitHandler}>
         <Form.Group controlId='name'>
-          <Form.Label>Name</Form.Label>
+          <Form.Label>UserName</Form.Label>
           <Form.Control
             type='name'
             placeholder='Enter name'
             value={name}
             onChange={(e) => setName(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group controlId='name'>
+          <Form.Label>First Name</Form.Label>
+          <Form.Control
+            type='name'
+            placeholder='Enter First Name'
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group controlId='name'>
+          <Form.Label>Last Name</Form.Label>
+          <Form.Control
+            type='name'
+            placeholder='Enter lastName'
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId='email'>
@@ -78,7 +98,7 @@ const RegisterScreen = ({ location, history }) => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Button block variant="warning" type='submit' >
+        <Button block variant='warning' type='submit'>
           Register
         </Button>
       </Form>

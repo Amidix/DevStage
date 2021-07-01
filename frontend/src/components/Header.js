@@ -101,15 +101,9 @@ const Header = () => {
             </Nav.Link>
           )}
 
-          {window.innerWidth < 1200 ? (
-            <div className='position-absolute sticky-top align-self-end navbar-text text-capitalize text-muted py-2 my-1'>
-              {login}
-            </div>
-          ) : (
-            <div className='ml-md-auto mr-md-3 my-auto navbar-text text-capitalize text-muted '>
-              {login}
-            </div>
-          )}
+          <div className='ml-md-auto mr-md-3 my-auto navbar-text text-capitalize text-muted '>
+            {login}
+          </div>
         </Nav>
       </Navbar.Collapse>
 
