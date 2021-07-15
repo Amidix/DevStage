@@ -76,8 +76,17 @@ const updateCountInStockProduct = asyncHandler(async (req, res) => {
 // @route GET /api/products
 // @access Private
 const createProduct = asyncHandler(async (req, res) => {
-  const { name, price, image, brand, category, countInStock, description } =
-    req.body
+  const {
+    name,
+    price,
+    image,
+    brand,
+    category,
+    countInStock,
+    description,
+    onSale,
+    salePrice,
+  } = req.body
   const product = new Product({
     name,
     price,
@@ -87,6 +96,8 @@ const createProduct = asyncHandler(async (req, res) => {
     category,
     countInStock,
     description,
+    onSale,
+    salePrice,
   })
   const createdProduct = await product.save()
   if (createdProduct) {
@@ -101,8 +112,17 @@ const createProduct = asyncHandler(async (req, res) => {
 // @route PUT /api/products/:id
 // @access Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
-  const { name, price, description, image, brand, category, countInStock } =
-    req.body
+  const {
+    name,
+    price,
+    description,
+    image,
+    brand,
+    category,
+    countInStock,
+    onSale,
+    salePrice,
+  } = req.body
   const product = await Product.findById(req.params.id)
   if (product) {
     product.name = name
@@ -112,6 +132,8 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.brand = brand
     product.category = category
     product.countInStock = countInStock
+    product.onSale = onSale
+    product.salePrice = salePrice
 
     const updatedProduct = await product.save()
     res.json(updatedProduct)

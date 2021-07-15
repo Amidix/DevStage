@@ -40,6 +40,8 @@ const HoverPopup = () => {
       name={item.name}
       price={item.price}
       qty={item.qty}
+      onSale={item.onSale}
+      salePrice={item.salePrice}
     />
   )
 
@@ -82,7 +84,11 @@ const HoverPopup = () => {
           <Popover.Title className='text-center text-dark' as='h2'>
             Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}) :
             {cartItems
-              .reduce((acc, item) => acc + item.qty * item.price, 0)
+              .reduce(
+                (acc, item) =>
+                  acc + item.qty * (item.onSale ? item.salePrice : item.price),
+                0
+              )
               .toFixed(2)}{' '}
             Dh
           </Popover.Title>

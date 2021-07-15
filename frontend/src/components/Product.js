@@ -2,6 +2,7 @@ import React from 'react'
 import { Card } from 'react-bootstrap'
 import Rating from './Rating'
 import { Link } from 'react-router-dom'
+import Price from 'react-price'
 
 const Product = ({ product }) => {
   return (
@@ -26,7 +27,19 @@ const Product = ({ product }) => {
       <Card.Text as='div'>
         <Rating value={product.rating} text={`${product.numReviews} reviews`} />
       </Card.Text>
-      <Card.Text as='h3'>{product.price} Dh</Card.Text>
+      <Card.Text as='h3'>
+        {product.onSale ? (
+          <p>
+            <Price cost={product.price} currency='Dh' type='old' />
+            <br></br>
+            <Price cost={product.salePrice} currency='Dh' />
+          </p>
+        ) : (
+          <p>
+            <Price cost={product.price} currency='Dh' />
+          </p>
+        )}
+      </Card.Text>
     </Card>
   )
 }

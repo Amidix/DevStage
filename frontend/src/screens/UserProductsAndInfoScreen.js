@@ -70,6 +70,8 @@ const UserProductsAndInfoScreen = ({ history, match }) => {
       chef={product.user && product.user.name}
       chefId={product.user && product.user._id}
       countInStock={product.countInStock}
+      onSale={product.onSale}
+      salePrice={product.salePrice}
     />
   )
   const handleChange = (e) => {

@@ -18,6 +18,8 @@ const ProductCreateScreen = ({ history }) => {
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
   const [uploading, setUploading] = useState(false)
+  const [onSale, setOnSale] = useState(false)
+  const [salePrice, setSalePrice] = useState(0)
 
   const dispatch = useDispatch()
 
@@ -63,6 +65,7 @@ const ProductCreateScreen = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault()
+    console.log('sale' + onSale + 'sale price' + salePrice)
     dispatch(
       createProduct(
         name,
@@ -71,7 +74,9 @@ const ProductCreateScreen = ({ history }) => {
         brand,
         category,
         countInStock,
-        description
+        description,
+        onSale,
+        salePrice
       )
     )
   }
@@ -108,11 +113,31 @@ const ProductCreateScreen = ({ history }) => {
               onChange={(e) => setPrice(e.target.value)}
             ></Form.Control>
           </Form.Group>
+          <Form.Group controlId='onsale'>
+            <Form.Check
+              type='checkbox'
+              label='On Sale'
+              checked={onSale}
+              onChange={(e) => setOnSale(e.target.checked)}
+            ></Form.Check>
+          </Form.Group>
+          {onSale ? (
+            <Form.Group controlId='saleprice'>
+              <Form.Label>Sale Price</Form.Label>
+              <Form.Control
+                type='number'
+                placeholder='Enter Sale price'
+                value={salePrice}
+                onChange={(e) => setSalePrice(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+          ) : null}
+
           <Form.Group controlId='image'>
             <Form.Label>Image</Form.Label>
             <Form.File
               id='image-file'
-              label={image ? image : 'Choose File'}
+              label={image ? image.slice(50) : 'Choose File'}
               custom
               encType='multipart/form-data'
               onChange={uploadFileHandler}

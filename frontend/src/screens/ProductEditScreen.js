@@ -21,6 +21,8 @@ const ProductEditScreen = ({ match, history }) => {
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
   const [uploading, setUploading] = useState(false)
+  const [onSale, setOnSale] = useState(false)
+  const [salePrice, setSalePrice] = useState(0)
 
   const dispatch = useDispatch()
 
@@ -56,6 +58,8 @@ const ProductEditScreen = ({ match, history }) => {
         setCategory(product.category)
         setCountInStock(product.countInStock)
         setDescription(product.description)
+        setOnSale(product.onSale)
+        setSalePrice(product.salePrice)
       }
     }
   }, [dispatch, history, productId, product, successUpdate, userInfo.isAdmin])
@@ -92,6 +96,8 @@ const ProductEditScreen = ({ match, history }) => {
         category,
         description,
         countInStock,
+        onSale,
+        salePrice,
       })
     )
     /**/
@@ -136,6 +142,25 @@ const ProductEditScreen = ({ match, history }) => {
                 onChange={(e) => setPrice(e.target.value)}
               ></Form.Control>
             </Form.Group>
+            <Form.Group controlId='onsale'>
+              <Form.Check
+                type='checkbox'
+                label='On Sale'
+                checked={onSale}
+                onChange={(e) => setOnSale(e.target.checked)}
+              ></Form.Check>
+            </Form.Group>
+            {onSale ? (
+              <Form.Group controlId='saleprice'>
+                <Form.Label>Sale Price</Form.Label>
+                <Form.Control
+                  type='number'
+                  placeholder='Enter Sale price'
+                  value={salePrice}
+                  onChange={(e) => setSalePrice(e.target.value)}
+                ></Form.Control>
+              </Form.Group>
+            ) : null}
             <Form.Group controlId='image'>
               <Form.Label>Image</Form.Label>
               <Form.File

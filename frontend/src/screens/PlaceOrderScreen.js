@@ -23,7 +23,11 @@ const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch()
   //Calculating prices
   cart.itemsPrice = cart.cartItems
-    .reduce((acc, item) => acc + item.price * item.qty, 0)
+    .reduce(
+      (acc, item) =>
+        acc + (item.onSale ? item.salePrice : item.price) * item.qty,
+      0
+    )
     .toFixed(2)
   cart.shippingPrice = Number(0)
   const orderCreate = useSelector((state) => state.orderCreate)
@@ -36,10 +40,28 @@ const PlaceOrderScreen = ({ history }) => {
     // eslint-disable-next-line
   }, [history, success])
 
+  const items = {
+    name: cart.cartItems.name,
+    price: cart.cartItems.onSale
+      ? cart.cartItems.salePrice
+      : cart.cartItems.price,
+    product: cart.cartItems.product,
+    image: cart.cartItems.image,
+    qty: cart.cartItems.qty,
+  }
+
   const placeOrderHandler = () => {
     dispatch(
       createOrder({
-        orderItems: cart.cartItems,
+        orderItems: {
+          name: cart.cartItems.name,
+          price: cart.cartItems.onSale
+            ? cart.cartItems.salePrice
+            : cart.cartItems.price,
+          product: cart.cartItems.product,
+          image: cart.cartItems.image,
+          qty: cart.cartItems.qty,
+        },
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
@@ -95,7 +117,10 @@ const PlaceOrderScreen = ({ history }) => {
                             </Link>
                           </Col>
                           <Col md={4}>
-                            {item.qty} x {item.price} = {item.qty * item.price}{' '}
+                            {item.qty} x{' '}
+                            {item.onSale ? item.salePrice : item.price} ={' '}
+                            {item.qty *
+                              (item.onSale ? item.salePrice : item.price)}{' '}
                             Dh
                           </Col>
                         </Row>

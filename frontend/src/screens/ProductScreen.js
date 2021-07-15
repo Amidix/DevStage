@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import home_top from '../assets/home_top.jpg'
 import CustomParallax from '../components/CustomParallax'
+import Price from 'react-price'
+
 import {
   Row,
   Col,
@@ -117,7 +119,7 @@ const ProductScreen = ({ history, match }) => {
                   <ListGroup.Item>
                     <Rating
                       value={product.rating}
-                      text={`${product.numReviews} reviews`}
+                      text={`  ${product.numReviews} reviews`}
                     />
                   </ListGroup.Item>
                   <ListGroup.Item>Price: {product.price} Dh</ListGroup.Item>
@@ -128,14 +130,35 @@ const ProductScreen = ({ history, match }) => {
               </Col>
               <Col md={3}>
                 <Card>
+                  {product.onSale ? (
+                    <ListGroup.Item align='center'>
+                      <Row>
+                        <Col style={{ color: 'red' }}>
+                          <strong>On Sale </strong>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  ) : null}
                   <ListGroup.Item>
                     <Row>
                       <Col>Price :</Col>
                       <Col>
-                        <strong>{product.price} Dh</strong>
+                        {product.onSale ? (
+                          <strong>
+                            <Price
+                              cost={product.price}
+                              currency='Dh'
+                              type='old'
+                            />{' '}
+                            <Price cost={product.salePrice} currency='Dh' />
+                          </strong>
+                        ) : (
+                          <strong>{product.price} Dh</strong>
+                        )}
                       </Col>
                     </Row>
                   </ListGroup.Item>
+
                   <ListGroup.Item>
                     <Row>
                       <Col>Status :</Col>
@@ -144,6 +167,7 @@ const ProductScreen = ({ history, match }) => {
                       </Col>
                     </Row>
                   </ListGroup.Item>
+
                   <ListGroup.Item align='center'>
                     {' '}
                     {product.countInStock > 0 && (

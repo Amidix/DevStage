@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import CustomButtonGroup from './CustomButtonGroup'
+import Price from 'react-price'
+import sale from '../assets/sale.png'
 
 export default function DeliveryCard(props) {
   const height =
@@ -19,11 +21,19 @@ export default function DeliveryCard(props) {
         <Card.Body className='py-3'>
           <Card.Title>
             <Row>
-              <Col xs={7} className='text-capitalize'>
+              <Col xs={6} className='text-capitalize'>
                 {props.title}
               </Col>
               <Col className='text-right px-0'>
-                <p className='mx-2 my-0 p-0 text-secondary'>{props.price} Dh</p>
+                {props.onSale ? (
+                  <p className='mx-2 my-0 p-0 text-danger'>
+                    <Price cost={props.salePrice} currency='Dh' />
+                  </p>
+                ) : (
+                  <p className='mx-2 my-0 p-0 text-secondary'>
+                    <Price cost={props.price} currency='Dh' />
+                  </p>
+                )}
               </Col>
             </Row>
           </Card.Title>

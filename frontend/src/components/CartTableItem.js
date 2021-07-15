@@ -7,7 +7,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addToCart, removeFromCart } from '../actions/cartActions'
 import { FormControl } from 'react-bootstrap'
 
-const CartTableItem = ({ product, image, name, price, qty, countInStock }) => {
+const CartTableItem = ({
+  product,
+  image,
+  name,
+  price,
+  qty,
+  countInStock,
+  onSale,
+  salePrice,
+}) => {
   const cart = useSelector((state) => state.cart)
   const { cartItems } = cart
   var idcar = cartItems[0] ? cartItems[0].product : product
@@ -15,6 +24,7 @@ const CartTableItem = ({ product, image, name, price, qty, countInStock }) => {
   const removeFromCartHandler = (product) => {
     dispatch(removeFromCart(product))
   }
+  console.log('saleprice' + salePrice)
 
   return (
     <tr className='text-center'>
@@ -29,7 +39,7 @@ const CartTableItem = ({ product, image, name, price, qty, countInStock }) => {
         <Image style={{ height: 110, width: 110 }} src={image} rounded />
       </td>
       <td className='align-middle'>{name}</td>
-      <td className='align-middle'>{price} Dh</td>
+      <td className='align-middle'>{onSale ? salePrice : price} Dhh</td>
       <td className='align-middle'>
         {' '}
         <FormControl
@@ -46,7 +56,9 @@ const CartTableItem = ({ product, image, name, price, qty, countInStock }) => {
           ))}
         </FormControl>
       </td>
-      <td className='align-middle'>{round(price * qty)} Dh</td>
+      <td className='align-middle'>
+        {!onSale ? round(price * qty) : round(salePrice * qty)} Dh
+      </td>
     </tr>
   )
 }

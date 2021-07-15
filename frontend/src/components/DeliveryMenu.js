@@ -33,6 +33,7 @@ import tajine from '../assets/tajine.png'
 import tajineColor from '../assets/tajineColor.png'
 import taco from '../assets/taco.png'
 import tacoColor from '../assets/tacoColor.png'
+import sale from '../assets/sale.png'
 import { Col } from 'react-bootstrap'
 
 const DeliveryMenu = () => {
@@ -42,19 +43,23 @@ const DeliveryMenu = () => {
 
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('')
+  const [onSale, setOnSale] = useState(false)
+
   const cart = useSelector((state) => state.cart)
   const { message } = cart
   const handleChange = (e) => {
     setSearch(e.target.value.toUpperCase())
   }
-  const itemsIterate = (category) => {
+  const itemsIterate = (category, onSale) => {
     if (products != null) {
       return Object.values(products)
         .filter((item) =>
-          category === ''
+          category === '' && onSale === false
             ? item.name.toUpperCase().includes(search) ||
               item.description.toUpperCase().includes(search) ||
               item.price.toString().toUpperCase().includes(search)
+            : onSale === true
+            ? item.onSale.toString().toUpperCase.includes(true)
             : item.category.toUpperCase().includes(category) ||
               item.name.toUpperCase().includes(category)
         )
@@ -80,6 +85,8 @@ const DeliveryMenu = () => {
       chef={product.user && product.user.name}
       chefId={product.user && product.user._id}
       countInStock={product.countInStock}
+      onSale={product.onSale}
+      salePrice={product.salePrice}
     />
   )
 
@@ -104,7 +111,23 @@ const DeliveryMenu = () => {
 
       <h1 className='pt-5 mx-auto'>Menu</h1>
 
-      <div className='filters'>
+      <div>
+        <Button
+          variant='light'
+          className='filters__filter'
+          onClick={() => setOnSale(true)}
+        >
+          <Card.Img
+            src={onSale === true ? sale : hamburger}
+            className='filters__filter__icon'
+          />{' '}
+          <h2
+            className='filters__filter__title'
+            style={{ fontWeight: onSale === true ? 'bold' : '' }}
+          >
+            On Sale
+          </h2>
+        </Button>
         <FilterBox
           category={category}
           filter=''
@@ -139,11 +162,11 @@ const DeliveryMenu = () => {
         ></FilterBox>
         <FilterBox
           category={category}
-          filter='PASTA'
-          onClick={() => setCategory('PASTA')}
-          logo={pasta}
-          logoColor={pastaColor}
-          filterName='Pasta'
+          filter='TRADITIONEL'
+          onClick={() => setCategory('TRADITIONEL')}
+          logo={tajine}
+          logoColor={tajineColor}
+          filterName='Traditionel'
         ></FilterBox>
         <FilterBox
           category={category}
@@ -179,14 +202,12 @@ const DeliveryMenu = () => {
         ></FilterBox>
         <FilterBox
           category={category}
-          filter='TRADITIONEL'
-          onClick={() => setCategory('TRADITIONEL')}
-          logo={tajine}
-          logoColor={tajineColor}
-          filterName='Traditionel'
+          filter='PASTA'
+          onClick={() => setCategory('PASTA')}
+          logo={pasta}
+          logoColor={pastaColor}
+          filterName='Pasta'
         ></FilterBox>
-
-        <br></br>
 
         <FilterBox
           category={category}

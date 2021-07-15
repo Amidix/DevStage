@@ -190,7 +190,10 @@ const OrderScreen = ({ match, history }) => {
                             </Link>
                           </Col>
                           <Col md={4}>
-                            {item.qty} x {item.price} = {item.qty * item.price}{' '}
+                            {item.qty} x{' '}
+                            {item.onSale ? item.salePrice : item.price} ={' '}
+                            {item.qty *
+                              (item.onSale ? item.salePrice : item.price)}{' '}
                             Dh
                           </Col>
                         </Row>

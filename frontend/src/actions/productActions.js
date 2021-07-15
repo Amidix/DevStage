@@ -160,7 +160,17 @@ export const updateCountInStock = (id, qty) => async (dispach, getState) => {
 }
 
 export const createProduct =
-  (name, price, image, brand, category, countInStock, description) =>
+  (
+    name,
+    price,
+    image,
+    brand,
+    category,
+    countInStock,
+    description,
+    onSale,
+    salePrice
+  ) =>
   async (dispach, getState) => {
     try {
       dispach({ type: PRODUCT_CREATE_REQUEST })
@@ -177,7 +187,17 @@ export const createProduct =
       }
       const { data } = await axios.post(
         '/api/products',
-        { name, price, image, brand, category, countInStock, description },
+        {
+          name,
+          price,
+          image,
+          brand,
+          category,
+          countInStock,
+          description,
+          onSale,
+          salePrice,
+        },
         config
       )
       dispach({
